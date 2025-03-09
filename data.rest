@@ -9,3 +9,30 @@ Content-Type: application/json
 "classType":"F",
 "name":"Advance"
 }
+
+###postresq signup###
+POST http://localhost:8005/auth/signup
+Content-Type: application/json
+
+{
+"email":"hashir@123.com",
+"password":"Test@123",
+"fullName":"hashir"
+}
+
+
+
+###postresq signin###
+POST http://localhost:8005/auth/login
+Content-Type: application/json
+
+{
+  "email": "hashir@123.com",
+  "password": "Test@123"
+}
+
+> {% client.global.set("auth_token", response.body.token); %}
+
+###test unauthorized###
+GET http://localhost:8005/users
+Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoYXNoaXJAMTIzLmNvbSIsImlhdCI6MTc0MTU0MzU5OSwiZXhwIjoxNzQxNTQ3MTk5fQ.BGUMkv7x7VU1dQA7__qDe0tf3bwBsar6bMq6lbeQauE}
