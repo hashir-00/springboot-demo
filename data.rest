@@ -1,0 +1,11 @@
+#GET http://localhost:8080/schoolSection
+#Accept: application/json
+
+POST http://localhost:8080/schoolSection
+Content-Type: application/json
+
+{
+"classNumber":"24",
+"classType":"F",
+"name":"Advance"
+}

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>School Section</title>
+</head>
+<body>
+<h1>
+    School Section
+</h1>
+<ul>
+    <li th:each="section : ${schoolSection}">
+        [[${section.name}]] - Class: [[${section.classNumber}]]
+    </li>
+</ul>
+</body>
+</html>
