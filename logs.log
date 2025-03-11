@@ -6,3 +6,4 @@
 2025-03-12 01:55:40 INFO  com.example.demo.DemoApplication - Started DemoApplication in 8.522 seconds (process running for 9.452)
 2025-03-12 01:55:40 INFO  com.example.demo.DemoApplication - Server Running on port 8005
 2025-03-12 01:55:44 INFO  c.e.d.w.c.AuthenticationController - Authenticated user hashir@123.com
+2025-03-12 01:56:58 INFO  o.s.api.AbstractOpenApiResource - Init duration for springdoc-openapi is: 294 ms
