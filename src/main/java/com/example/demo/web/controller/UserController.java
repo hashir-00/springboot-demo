@@ -21,6 +21,7 @@ public class UserController {
     }
 
     @GetMapping("/me")
+
     public ResponseEntity<Users> authenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 

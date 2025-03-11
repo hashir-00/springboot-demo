@@ -6,8 +6,11 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
 
 @SpringBootApplication
+@EnableWebMvc
 @EnableJpaRepositories(basePackages = "com.example.demo.data.repository")
 @EntityScan(basePackages = "com.example.demo.data.entity")
 public class DemoApplication {
