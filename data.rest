@@ -28,11 +28,12 @@ Content-Type: application/json
 
 {
   "email": "hashir@123.com",
-  "password": "Test@123"
+  "password": "Test@123",
+  "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoYXNoaXJAMTIzLmNvbSIsImlhdCI6MTc0MTcyMzYxOCwiZXhwIjoxNzQxNzI3MjE4fQ.KEsJSxFK5hBfK8uqmqDIM2AEL-HP2RZc0K3Vf1n0yWc"
 }
 
 > {% client.global.set("auth_token", response.body.token); %}
 
 ###test unauthorized###
-GET http://localhost:8005/users
-Authorization: Bearer {eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoYXNoaXJAMTIzLmNvbSIsImlhdCI6MTc0MTU0MzU5OSwiZXhwIjoxNzQxNTQ3MTk5fQ.BGUMkv7x7VU1dQA7__qDe0tf3bwBsar6bMq6lbeQauE}
+GET http://localhost:8005/users/
+Authorization: Bearer {{auth_token}}
