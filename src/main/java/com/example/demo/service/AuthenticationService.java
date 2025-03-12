@@ -5,6 +5,7 @@ import com.example.demo.data.entity.Users;
 import com.example.demo.data.repository.UserRepository;
 import com.example.demo.service.model.CreateUser;
 import com.example.demo.service.model.LoginUser;
+import com.example.demo.web.exception.AuthenticationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,14 +41,22 @@ public class AuthenticationService {
     }
 
     public Users authenticate(LoginUser input) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        input.getEmail(),
-                        input.getPassword()
-                )
-        );
+        try {
+            // Authenticate the user using Spring Security's AuthenticationManager
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            input.getEmail(),
+                            input.getPassword()
+                    )
+            );
+        } catch (Exception e) {
+            // Throw a custom exception if authentication fails
+            throw new AuthenticationException("Invalid email or password");
+        }
 
+        // Retrieve the user from the database
         return userRepository.findByEmail(input.getEmail())
-                .orElseThrow();
+                .orElseThrow(() -> new AuthenticationException("User not found"));
     }
-}
+    }
+

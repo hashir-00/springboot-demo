@@ -29,6 +29,7 @@
 - PDF upload system
 - Google Drive integration
 - Logging for all controllers
+- CICD in cloud
 
 ---
 
