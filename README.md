@@ -27,7 +27,7 @@
 - JWT-based authentication
 - Swagger API documentation
 - Logging for all controllers
-- sanitized inputs 
+- sanitized inputs
 - PDF upload system
 - Google Drive integration
 

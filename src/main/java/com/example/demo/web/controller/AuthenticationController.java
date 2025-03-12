@@ -6,11 +6,11 @@ import com.example.demo.service.JwtService;
 import com.example.demo.service.model.CreateUser;
 import com.example.demo.service.model.LoginResponse;
 import com.example.demo.service.model.LoginUser;
+import com.example.demo.service.model.LogoutResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RequestMapping("/auth")
 @RestController
@@ -41,4 +41,14 @@ public class AuthenticationController {
 
         return ResponseEntity.ok(loginResponse);
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<LogoutResponse> logout(@RequestHeader("Authorization") String authorizationHeader) {
+        String token = authorizationHeader.substring(7).trim();
+        authenticationService.signout(token);
+        return ResponseEntity.ok(new LogoutResponse());
+
+    }
+
+
 }

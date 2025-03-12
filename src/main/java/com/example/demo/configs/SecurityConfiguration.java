@@ -54,7 +54,7 @@ public class SecurityConfiguration {
                                 .requestMatchers("/swagger-ui/**").permitAll()
                                  .requestMatchers("/v3/api-docs/**").permitAll()// Open Swagger UI
                                 // Add other secured paths here (e.g., .requestMatchers("/api/secure/**").authenticated())
-                                .anyRequest().permitAll() // Change to .authenticated() if you want to secure other endpoints
+                                .anyRequest().authenticated() // Change to .authenticated() if you want to secure other endpoints
                 )
 
                 // Add JWT filter before UsernamePasswordAuthenticationFilter
