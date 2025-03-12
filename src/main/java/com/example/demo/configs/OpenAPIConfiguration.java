@@ -26,9 +26,9 @@ public class OpenAPIConfiguration {
         myContact.setEmail("hashirHalaldeen00@gmail.com");
 
         Info information = new Info()
-                .title("School System API DOCs")
+                .title("PET system API DOCs")
                 .version("1.0")
-                .description("This API exposes endpoints to manage employees.")
+                .description("This API exposes endpoints to this pet project.")
                 .contact(myContact);
         return new OpenAPI().info(information).servers(List.of(server));
     }
