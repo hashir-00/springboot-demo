@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.utils.TokenBlackList;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -11,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,8 @@ public class JwtService {
 
     @Value("${security.jwt.expiration-time}")
     private long jwtExpiration;
+
+
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -40,8 +44,33 @@ public class JwtService {
         return buildToken(extraClaims, userDetails, jwtExpiration);
     }
 
+
     public long getExpirationTime() {
         return jwtExpiration;
+    }
+
+    public boolean isValidToken(String token) {
+        if (TokenBlackList.isTokenBlacklisted(token)) {
+            return false; // Token is invalid if blacklisted
+        }
+
+        try {
+            // Parse and validate the token (e.g., check signature and expiration)
+            Jwts.parserBuilder()
+                    .setSigningKey(secretKey) // Replace with your actual secret key
+                    .build()
+                    .parseClaimsJws(token);
+            return true; // Token is valid
+        } catch (Exception e) {
+            return false; // Token is invalid if parsing fails
+        }
+    }
+
+    public void invalidateToken(String token) throws RuntimeException {
+        if(TokenBlackList.isTokenBlacklisted(token)) {
+           throw new RuntimeException("Token is blacklisted");
+        }
+      TokenBlackList.invalidateToken(token);
     }
 
     private String buildToken(
@@ -60,6 +89,9 @@ public class JwtService {
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
+        if (TokenBlackList.isTokenBlacklisted(token)) {
+            return false; // Token is invalid if blacklisted
+        }
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
