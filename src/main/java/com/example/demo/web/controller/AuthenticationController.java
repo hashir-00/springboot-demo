@@ -7,6 +7,7 @@ import com.example.demo.service.model.CreateUser;
 import com.example.demo.service.model.LoginResponse;
 import com.example.demo.service.model.LoginUser;
 import com.example.demo.service.model.LogoutResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,11 +44,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<LogoutResponse> logout(@RequestHeader("Authorization") String authorizationHeader) {
-        String token = authorizationHeader.substring(7).trim();
-        authenticationService.signout(token);
-        return ResponseEntity.ok(new LogoutResponse());
 
+    public ResponseEntity<LogoutResponse> logout(HttpServletRequest request) {
+        return authenticationService.signout(request);
     }
 
 

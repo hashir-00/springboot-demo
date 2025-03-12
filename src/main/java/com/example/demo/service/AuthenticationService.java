@@ -6,6 +6,7 @@ import com.example.demo.data.repository.UserRepository;
 import com.example.demo.service.model.CreateUser;
 import com.example.demo.service.model.LoginUser;
 import com.example.demo.service.model.LogoutResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -55,12 +56,18 @@ public class AuthenticationService {
                 .orElseThrow();
     }
 
-    public  LogoutResponse signout(String token) {
+    public  ResponseEntity<LogoutResponse> signout(HttpServletRequest request) {
         try {
+            String authorizationHeader = request.getHeader("Authorization");
+            if (!authorizationHeader.startsWith("Bearer ")) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+            String token = authorizationHeader.substring(7).trim();
             jwtService.invalidateToken(token);
-            return new LogoutResponse().setMessage("Successfully logged out").setStatus(HttpStatus.OK);
+            return ResponseEntity.ok(new LogoutResponse().setMessage("You have been successfully logged out").setStatus(HttpStatus.OK));
         } catch (Exception e) {
-            return new LogoutResponse().setMessage(e.getMessage()).setStatus(HttpStatus.UNAUTHORIZED);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new LogoutResponse().setMessage(e.getMessage()).setStatus(HttpStatus.UNAUTHORIZED));
         }
     }
 

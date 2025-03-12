@@ -66,7 +66,10 @@ public class JwtService {
         }
     }
 
-    public void invalidateToken(String token) {
+    public void invalidateToken(String token) throws RuntimeException {
+        if(TokenBlackList.isTokenBlacklisted(token)) {
+           throw new RuntimeException("Token is blacklisted");
+        }
       TokenBlackList.invalidateToken(token);
     }
 
