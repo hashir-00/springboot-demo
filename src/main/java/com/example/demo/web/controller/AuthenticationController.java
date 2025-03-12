@@ -6,11 +6,12 @@ import com.example.demo.service.JwtService;
 import com.example.demo.service.model.CreateUser;
 import com.example.demo.service.model.LoginResponse;
 import com.example.demo.service.model.LoginUser;
+import com.example.demo.service.model.LogoutResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,4 +46,12 @@ public class AuthenticationController {
         logger.info("Authenticated user {}", authenticatedUser.getEmail());
         return ResponseEntity.ok(loginResponse);
     }
+
+    @PostMapping("/logout")
+
+    public ResponseEntity<LogoutResponse> logout(HttpServletRequest request) {
+        return authenticationService.signout(request);
+    }
+
+
 }

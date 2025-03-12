@@ -1,0 +1,9 @@
+2025-03-12 01:55:32 INFO  com.example.demo.DemoApplication - Starting DemoApplication using Java 23.0.2 with PID 14248 (C:\Users\Hashir\Desktop\learning\spring java\demo\target\classes started by Hashirhalaldeen in C:\Users\Hashir\Desktop\learning\spring java\demo)
+2025-03-12 01:55:32 INFO  com.example.demo.DemoApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-12 01:55:35 INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8005"]
+2025-03-12 01:55:38 WARN  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-03-12 01:55:40 INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8005"]
+2025-03-12 01:55:40 INFO  com.example.demo.DemoApplication - Started DemoApplication in 8.522 seconds (process running for 9.452)
+2025-03-12 01:55:40 INFO  com.example.demo.DemoApplication - Server Running on port 8005
+2025-03-12 01:55:44 INFO  c.e.d.w.c.AuthenticationController - Authenticated user hashir@123.com
+2025-03-12 01:56:58 INFO  o.s.api.AbstractOpenApiResource - Init duration for springdoc-openapi is: 294 ms

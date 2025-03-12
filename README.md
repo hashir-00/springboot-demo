@@ -26,6 +26,8 @@
 - Database integration with PostgreSQL
 - JWT-based authentication
 - Swagger API documentation
+- Logging for all controllers
+- sanitized inputs
 - PDF upload system
 - Google Drive integration
 - Logging for all controllers
