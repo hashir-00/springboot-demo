@@ -13,9 +13,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @RequestMapping("/auth")
 @RestController
 public class AuthenticationController {
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class.getName());
     private final JwtService jwtService;
 
     private final AuthenticationService authenticationService;
@@ -28,7 +32,7 @@ public class AuthenticationController {
     @PostMapping("/signup")
     public ResponseEntity<Users> register(@RequestBody CreateUser registerUserDto) {
         Users registeredUser = authenticationService.signup(registerUserDto);
-
+        logger.debug("Registered user {}", registeredUser);
         return ResponseEntity.ok(registeredUser);
     }
 
@@ -39,7 +43,7 @@ public class AuthenticationController {
         String jwtToken = jwtService.generateToken(authenticatedUser);
 
         LoginResponse loginResponse = new LoginResponse().setToken(jwtToken).setExpiresIn(jwtService.getExpirationTime());
-
+        logger.info("Authenticated user {}", authenticatedUser.getEmail());
         return ResponseEntity.ok(loginResponse);
     }
 
