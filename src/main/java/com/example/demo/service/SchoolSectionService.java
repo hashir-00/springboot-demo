@@ -5,6 +5,8 @@ import com.example.demo.data.repository.SchoolSectionRepository;
 import com.example.demo.data.repository.StudentRepository;
 import com.example.demo.data.repository.TeacherRepository;
 import com.example.demo.service.model.SchoolSectionModal;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,6 +16,8 @@ import java.util.Map;
 
 @Service
 public class SchoolSectionService {
+    private static final Logger logger = LoggerFactory.getLogger(SchoolSectionService.class);
+
     private final SchoolSectionRepository schoolSectionRepository;
     private final TeacherRepository teacherRepository;
     private final StudentRepository studentRepository;
@@ -25,25 +29,38 @@ public class SchoolSectionService {
     }
 
     public void save(SchoolSectionModal schoolSectionModal) {
-        SchoolSection schoolSection = new SchoolSection();
-        schoolSection.setName(schoolSectionModal.getName());
-        schoolSection.setClassNumber(schoolSectionModal.getClassNumber());
-        schoolSection.setClassType(schoolSectionModal.getClassType());
-        schoolSectionRepository.save(schoolSection);
+       try{
+           logger.info("Saving school section: {}", schoolSectionModal);
+
+           SchoolSection schoolSection = new SchoolSection();
+           schoolSection.setName(schoolSectionModal.getName());
+           schoolSection.setClassNumber(schoolSectionModal.getClassNumber());
+           schoolSection.setClassType(schoolSectionModal.getClassType());
+           schoolSectionRepository.save(schoolSection);
+
+           logger.info("Saved school section: {}", schoolSectionModal);
+       }catch (Exception e){
+           throw new RuntimeException("Failed to save school section: " + e.getMessage());
+       }
     }
 
     public SchoolSectionModal getSectionByTeacherId(long id) {
-        SchoolSection schoolSection = schoolSectionRepository.findSchoolSectionByTeacher_TeacherId(id);
-        if (schoolSection == null) {
-            return null;
-        }
+       try{
+           logger.info("Attempting to get school section by Teacher Id: {}", id);
+           SchoolSection schoolSection = schoolSectionRepository.findSchoolSectionByTeacher_TeacherId(id);
+           if (schoolSection == null) {
+               return null;
+           }
 
-        SchoolSectionModal modal = new SchoolSectionModal();
-        modal.setName(schoolSection.getName());
-        modal.setClassNumber(schoolSection.getClassNumber());
-        modal.setClassType(schoolSection.getClassType());
-
-        return modal;
+           SchoolSectionModal modal = new SchoolSectionModal();
+           modal.setName(schoolSection.getName());
+           modal.setClassNumber(schoolSection.getClassNumber());
+           modal.setClassType(schoolSection.getClassType());
+           logger.info("Successfully recieved school section: {}", id);
+           return modal;
+       }catch (Exception e){
+           throw new RuntimeException("Failed to get school section: " + e.getMessage());
+       }
     }
 
     public List<SchoolSectionModal> getAllSections() {
@@ -58,15 +75,20 @@ public class SchoolSectionService {
 //            modalModals.add(modal);
 //        }
 //        return modalModals;
-        return schoolSectionRepository.findAll().stream()
-                .map(schoolSection -> {
-                    SchoolSectionModal modal = new SchoolSectionModal();
-                    modal.setName(schoolSection.getName());
-                    modal.setClassNumber(schoolSection.getClassNumber());
-                    modal.setClassType(schoolSection.getClassType());
-                    return modal;
-                })
-                .toList();
+        try{
+            logger.info("Retrieving all school sections");
+            return schoolSectionRepository.findAll().stream()
+                    .map(schoolSection -> {
+                        SchoolSectionModal modal = new SchoolSectionModal();
+                        modal.setName(schoolSection.getName());
+                        modal.setClassNumber(schoolSection.getClassNumber());
+                        modal.setClassType(schoolSection.getClassType());
+                        return modal;
+                    })
+                    .toList();
+        }catch (Exception e){
+            throw new RuntimeException("Failed to get school sections: " + e.getMessage());
+        }
     };
 
 }
