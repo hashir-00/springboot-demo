@@ -9,7 +9,8 @@ import java.util.Optional;
 @Repository
 public interface  TeacherRepository extends JpaRepository<Teacher, Long> {
 
-   Optional<Teacher> findTeacherByTeacherId(long teacherId);
+  Teacher findTeacherByTeacherId(float teacherId);
 
     Optional<Teacher> findTeacherByFirstName(String firstName);
+
 }
