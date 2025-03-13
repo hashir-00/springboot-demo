@@ -105,7 +105,7 @@ public class AuthenticationService {
 
     // Signout Method
     public ResponseEntity<LogoutResponse> signout(HttpServletRequest request) {
-        logger.debug("Attempting to log out user");
+        logger.info("Attempting to log out user");
         try {
             String authorizationHeader = request.getHeader("Authorization");
 

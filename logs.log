@@ -1,0 +1,30 @@
+2025-03-13 13:23:37 INFO  com.example.demo.DemoApplication - Starting DemoApplication using Java 23.0.2 with PID 13280 (C:\Users\Hashir\Desktop\learning\spring java\demo\target\classes started by Hashirhalaldeen in C:\Users\Hashir\Desktop\learning\spring java\demo)
+2025-03-13 13:23:37 INFO  com.example.demo.DemoApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-13 13:23:40 INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8005"]
+2025-03-13 13:23:44 WARN  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-03-13 13:23:44 INFO  c.e.d.service.AuthenticationService - AuthenticationService initialized successfully.
+2025-03-13 13:23:46 INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8005"]
+2025-03-13 13:23:46 INFO  com.example.demo.DemoApplication - Started DemoApplication in 9.614 seconds (process running for 10.774)
+2025-03-13 13:23:46 INFO  com.example.demo.DemoApplication - Server Running on port 8005
+2025-03-13 13:24:30 INFO  c.example.demo.service.UserService - Getting user by username: hashir@123.com
+2025-03-13 13:24:30 INFO  com.example.demo.service.JwtService - Token is not expired. Expiration date: Thu Mar 13 14:17:16 IST 2025
+2025-03-13 13:24:30 INFO  com.example.demo.service.JwtService - Token is valid for user: hashir@123.com
+2025-03-13 13:24:30 INFO  c.example.demo.service.UserService - Getting all users
+2025-03-13 13:24:47 INFO  c.example.demo.service.UserService - Getting user by username: hashir@123.com
+2025-03-13 13:24:47 INFO  com.example.demo.service.JwtService - Token is not expired. Expiration date: Thu Mar 13 14:17:16 IST 2025
+2025-03-13 13:24:47 INFO  com.example.demo.service.JwtService - Token is valid for user: hashir@123.com
+2025-03-13 13:24:47 INFO  c.e.d.w.c.AuthenticationController - Authenticated user Signed out
+2025-03-13 13:24:47 INFO  c.e.d.service.AuthenticationService - Attempting to log out user
+2025-03-13 13:24:47 INFO  c.e.d.service.AuthenticationService - Invalidating token during logout
+2025-03-13 13:24:47 INFO  com.example.demo.service.JwtService - Token successfully invalidated and blacklisted
+2025-03-13 13:24:47 INFO  c.e.d.service.AuthenticationService - User logged out successfully
+2025-03-13 13:24:51 INFO  c.example.demo.service.UserService - Getting user by username: hashir@123.com
+2025-03-13 13:24:51 WARN  com.example.demo.service.JwtService - Token is blacklisted for user: hashir@123.com
+2025-03-13 13:25:13 INFO  c.example.demo.service.UserService - Getting user by username: hashir@123.com
+2025-03-13 13:25:13 WARN  com.example.demo.service.JwtService - Token is blacklisted for user: hashir@123.com
+2025-03-13 13:26:18 INFO  c.e.d.w.c.AuthenticationController - Authenticated user hashir@123.com
+2025-03-13 13:26:18 INFO  c.example.demo.service.UserService - Getting user by username: hashir@123.com
+2025-03-13 13:26:18 INFO  c.e.d.service.AuthenticationService - Authentication successful for user with email: hashir@123.com
+2025-03-13 13:26:18 INFO  com.example.demo.service.JwtService - Generating token with extra claims for user: hashir@123.com
+2025-03-13 13:26:18 INFO  c.e.d.service.AuthenticationService - JWT token generated successfully for user with email: hashir@123.com
+2025-03-13 13:26:18 INFO  c.e.d.service.AuthenticationService - Login successful for user with email: hashir@123.com
