@@ -84,6 +84,10 @@
         <appender-ref ref="CONSOLE" />
     </root>
 
+    <root level="ERROR">
+        <appender-ref ref="CONSOLE" />
+    </root>
+
     <root level="DEBUG"> <!-- Set to DEBUG to ensure all logs are captured -->
         <appender-ref ref="CONSOLE" />
     </root>

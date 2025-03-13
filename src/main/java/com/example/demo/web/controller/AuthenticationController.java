@@ -20,8 +20,8 @@ import org.slf4j.LoggerFactory;
 @RestController
 public class AuthenticationController {
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class.getName());
-    private final JwtService jwtService;
 
+    private final JwtService jwtService;
     private final AuthenticationService authenticationService;
 
     public AuthenticationController(JwtService jwtService, AuthenticationService authenticationService) {
@@ -38,18 +38,15 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginUser loginUserDto) {
-        Users authenticatedUser = authenticationService.authenticate(loginUserDto);
 
-        String jwtToken = jwtService.generateToken(authenticatedUser);
-
-        LoginResponse loginResponse = new LoginResponse().setToken(jwtToken).setExpiresIn(jwtService.getExpirationTime());
-        logger.info("Authenticated user {}", authenticatedUser.getEmail());
-        return ResponseEntity.ok(loginResponse);
+        logger.info("Authenticated user {}", loginUserDto.getEmail());
+        return this.authenticationService.login(loginUserDto);
     }
 
     @PostMapping("/logout")
 
     public ResponseEntity<LogoutResponse> logout(HttpServletRequest request) {
+        logger.info("Authenticated user Signed out");
         return authenticationService.signout(request);
     }
 
