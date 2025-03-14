@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,10 +45,16 @@ public class AuthenticationController {
     }
 
     @PostMapping("/logout")
-
     public ResponseEntity<LogoutResponse> logout(HttpServletRequest request) {
         logger.info("Authenticated user Signed out");
         return authenticationService.signout(request);
+    }
+
+    @PostMapping("/refresh-token")
+    public ResponseEntity<LoginResponse> refreshToken( @RequestParam UUID refreshToken) {
+        logger.info("Authenticated user Refresh token");
+        LoginResponse response= authenticationService.refreshToken(refreshToken);
+        return ResponseEntity.ok(response);
     }
 
 

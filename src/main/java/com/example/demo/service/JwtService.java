@@ -15,6 +15,7 @@ import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -95,15 +96,17 @@ public class JwtService {
     }
 
     // Invalidate Token
-    public void invalidateToken(String token) {
+    public String invalidateToken(String token) {
         try {
             logger.debug("Attempting to invalidate token");
             if (TokenBlackList.isTokenBlacklisted(token)) {
                 logger.warn("Token is already blacklisted");
                 throw new RuntimeException("Token is already blacklisted");
             }
+            String username = this.extractUsername(token);
             TokenBlackList.invalidateToken(token);
             logger.debug("Token successfully invalidated and blacklisted");
+            return username;
         } catch (Exception e) {
             logger.error("Error invalidating token: {}", e.getMessage());
             throw new RuntimeException("Failed to invalidate token" );
