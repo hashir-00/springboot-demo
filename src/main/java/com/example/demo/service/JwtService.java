@@ -46,7 +46,7 @@ public class JwtService {
             final Claims claims = extractAllClaims(token);
             return claimsResolver.apply(claims);
         } catch (Exception e) {
-            logger.info("Error extracting claim from token: {}", e.getMessage());
+            logger.error("Error extracting claim from token: {}", e.getMessage());
             throw new RuntimeException("Failed to extract claim from token");
         }
     }
@@ -65,7 +65,7 @@ public class JwtService {
     // Generate Token with Extra Claims
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
         try {
-            logger.info("Generating token with extra claims for user: {}", userDetails.getUsername());
+            logger.debug("Generating token with extra claims for user: {}", userDetails.getUsername());
             return buildToken(extraClaims, userDetails, jwtExpiration);
         } catch (Exception e) {
             logger.error("Error generating token with extra claims for user {}: {}", userDetails.getUsername(), e.getMessage());
@@ -86,7 +86,7 @@ public class JwtService {
                     .setSigningKey(secretKey)
                     .build()
                     .parseClaimsJws(token);
-            logger.info("Token is valid");
+            logger.debug("Token is valid");
             return true; // Token is valid
         } catch (Exception e) {
             logger.error("Invalid token: {}", e.getMessage());
@@ -103,7 +103,7 @@ public class JwtService {
                 throw new RuntimeException("Token is already blacklisted");
             }
             TokenBlackList.invalidateToken(token);
-            logger.info("Token successfully invalidated and blacklisted");
+            logger.debug("Token successfully invalidated and blacklisted");
         } catch (Exception e) {
             logger.error("Error invalidating token: {}", e.getMessage());
             throw new RuntimeException("Failed to invalidate token" );
@@ -142,7 +142,7 @@ public class JwtService {
             final String username = extractUsername(token);
             boolean isValid = username.equals(userDetails.getUsername()) && !isTokenExpired(token);
             if (isValid) {
-                logger.info("Token is valid for user: {}", userDetails.getUsername());
+                logger.debug("Token is valid for user: {}", userDetails.getUsername());
             } else {
                 logger.warn("Token is invalid or expired for user: {}", userDetails.getUsername());
             }
@@ -162,7 +162,7 @@ public class JwtService {
             if (isExpired) {
                 logger.warn("Token is expired. Expiration date: {}", expirationDate);
             } else {
-                logger.info("Token is not expired. Expiration date: {}", expirationDate);
+                logger.debug("Token is not expired. Expiration date: {}", expirationDate);
             }
             return isExpired;
         } catch (Exception e) {

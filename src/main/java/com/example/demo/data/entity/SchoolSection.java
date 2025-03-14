@@ -1,5 +1,6 @@
 package com.example.demo.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,13 +12,13 @@ import java.util.List;
 @Table(name = "school_section")
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"students","teacher"})
 public class SchoolSection {
 
     @Id
     @Column(name = "section_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long sectionId;
+    private Long sectionId;
 
     @Column(name = "name")
     private String name;
@@ -29,6 +30,7 @@ public class SchoolSection {
     private String classType;
 
     @OneToMany(mappedBy = "section",fetch = FetchType.EAGER)
+    @JsonManagedReference(value = "section-student")
     private List<Student> students;
 
     @OneToOne(mappedBy = "section", fetch = FetchType.EAGER)

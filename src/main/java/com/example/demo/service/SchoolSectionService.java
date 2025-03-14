@@ -30,7 +30,7 @@ public class SchoolSectionService {
 
     public void save(SchoolSectionModal schoolSectionModal) {
        try{
-           logger.info("Saving school section: {}", schoolSectionModal);
+           logger.debug("Saving school section: {}", schoolSectionModal);
 
            SchoolSection schoolSection = new SchoolSection();
            schoolSection.setName(schoolSectionModal.getName());
@@ -38,7 +38,7 @@ public class SchoolSectionService {
            schoolSection.setClassType(schoolSectionModal.getClassType());
            schoolSectionRepository.save(schoolSection);
 
-           logger.info("Saved school section: {}", schoolSectionModal);
+           logger.debug("Saved school section: {}", schoolSectionModal);
        }catch (Exception e){
            throw new RuntimeException("Failed to save school section: " + e.getMessage());
        }
@@ -46,7 +46,7 @@ public class SchoolSectionService {
 
     public SchoolSectionModal getSectionByTeacherId(long id) {
        try{
-           logger.info("Attempting to get school section by Teacher Id: {}", id);
+           logger.debug("Attempting to get school section by Teacher Id: {}", id);
            SchoolSection schoolSection = schoolSectionRepository.findSchoolSectionByTeacher_TeacherId(id);
            if (schoolSection == null) {
                return null;
@@ -56,7 +56,7 @@ public class SchoolSectionService {
            modal.setName(schoolSection.getName());
            modal.setClassNumber(schoolSection.getClassNumber());
            modal.setClassType(schoolSection.getClassType());
-           logger.info("Successfully recieved school section: {}", id);
+           logger.debug("Successfully recieved school section: {}", id);
            return modal;
        }catch (Exception e){
            throw new RuntimeException("Failed to get school section: " + e.getMessage());
@@ -76,7 +76,7 @@ public class SchoolSectionService {
 //        }
 //        return modalModals;
         try{
-            logger.info("Retrieving all school sections");
+            logger.debug("Retrieving all school sections");
             return schoolSectionRepository.findAll().stream()
                     .map(schoolSection -> {
                         SchoolSectionModal modal = new SchoolSectionModal();

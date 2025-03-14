@@ -53,6 +53,8 @@ public class SecurityConfiguration {
                                 .requestMatchers("/auth/**").permitAll()  // Open authentication endpoints
                                 .requestMatchers("/swagger-ui/**").permitAll()
                                  .requestMatchers("/v3/api-docs/**").permitAll()// Open Swagger UI
+                                .requestMatchers("/welcome/**").permitAll()
+                                .requestMatchers("/dashboard/**").permitAll()
                                 // Add other secured paths here (e.g., .requestMatchers("/api/secure/**").authenticated())
                                 .anyRequest().authenticated() // Change to .authenticated() if you want to secure other endpoints
                 )

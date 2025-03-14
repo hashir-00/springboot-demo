@@ -13,8 +13,9 @@ public interface SchoolSectionRepository extends JpaRepository<SchoolSection, Lo
 
     SchoolSection findSchoolSectionByClassNumber(int classNumber);
 
-    SchoolSection findSchoolSectionByTeacher_TeacherId(Long teacherId);
+    SchoolSection findSchoolSectionByTeacher_TeacherId(float teacherId);
 
-    SchoolSection findSchoolSectionBySectionId(long sectionId);
+    SchoolSection findSchoolSectionBySectionId(float sectionId);
 
+    SchoolSection findBySectionId(float sectionId);
 }

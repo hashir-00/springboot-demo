@@ -105,7 +105,7 @@ public class AuthenticationService {
 
     // Signout Method
     public ResponseEntity<LogoutResponse> signout(HttpServletRequest request) {
-        logger.info("Attempting to log out user");
+        logger.debug("Attempting to log out user");
         try {
             String authorizationHeader = request.getHeader("Authorization");
 
@@ -115,10 +115,10 @@ public class AuthenticationService {
             }
 
             String token = authorizationHeader.substring(7).trim();
-            logger.info("Invalidating token during logout");
+            logger.debug("Invalidating token during logout");
 
             jwtService.invalidateToken(token);
-            logger.info("User logged out successfully");
+            logger.debug("User logged out successfully");
 
             return ResponseEntity.ok(new LogoutResponse()
                     .setMessage("You have been successfully logged out")
