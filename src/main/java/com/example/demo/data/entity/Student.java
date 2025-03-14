@@ -1,5 +1,6 @@
 package com.example.demo.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,11 +13,11 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"section", "teacher"})
+@ToString(exclude = {"section","teacher"})
 public class Student {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "student_id")
     private Long studentId;
 
@@ -33,11 +34,13 @@ public class Student {
     private String gender;
 
     @ManyToOne
+    @JsonBackReference(value = "section-student")
     @JoinColumn(name = "section_id", referencedColumnName = "section_id", nullable = true)
     private SchoolSection section;
 
     @ManyToOne
-    @JoinColumn(name = "teacher_id",referencedColumnName = "teacher_id")
+    @JsonBackReference(value = "teacher-student")
+    @JoinColumn(name = "teacher_id",referencedColumnName = "teacher_id",nullable = true)
     private Teacher teacher;
 
 }

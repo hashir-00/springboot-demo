@@ -26,7 +26,7 @@ public class UserService implements UserDetailsService {
 
     public List<Users> allUsers() {
        try{
-           logger.info("Getting all users");
+           logger.debug("Getting all users");
            List<Users> users = new ArrayList<>();
            users.addAll(userRepository.findAll());
            return users;
@@ -38,13 +38,13 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        logger.info("Getting user by username: " + username);
+        logger.debug("Getting user by username: " + username);
            return this.userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
     public Users getCurrentUser() throws UsernameNotFoundException {
        try{
-           logger.info("Getting user by Current Session:");
+           logger.debug("Getting user by Current Session:");
            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
            return  (Users) authentication.getPrincipal();
        }catch (Exception e){
