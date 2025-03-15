@@ -2,6 +2,7 @@ package com.example.demo.web.controller;
 
 import com.example.demo.data.entity.Users;
 import com.example.demo.service.UserService;
+import com.example.demo.service.model.UserOutput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequestMapping("/users")
 @RestController
@@ -31,9 +34,12 @@ public class UserController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<Users>> allUsers() {
+    public ResponseEntity<List<UserOutput>> allUsers() {
         logger.info("Authenticated users");
         List <Users> users = userService.allUsers();
-        return ResponseEntity.ok(users);
+
+        List<UserOutput> usersOut = users.stream().map(UserOutput::userOutput).collect(Collectors.toList());
+
+        return ResponseEntity.ok(usersOut);
     }
 }

@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
+
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -22,11 +22,10 @@ import org.slf4j.LoggerFactory;
 public class AuthenticationController {
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class.getName());
 
-    private final JwtService jwtService;
+
     private final AuthenticationService authenticationService;
 
     public AuthenticationController(JwtService jwtService, AuthenticationService authenticationService) {
-        this.jwtService = jwtService;
         this.authenticationService = authenticationService;
     }
 
