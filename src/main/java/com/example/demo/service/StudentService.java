@@ -7,12 +7,13 @@ import com.example.demo.data.repository.SchoolSectionRepository;
 import com.example.demo.data.repository.StudentRepository;
 import com.example.demo.data.repository.TeacherRepository;
 import com.example.demo.service.model.CreateStudent;
-import jakarta.transaction.Transactional;
+import com.example.demo.service.model.StudentOutput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
@@ -28,28 +29,31 @@ public class StudentService {
         this.schoolSectionRepository = schoolSectionRepository;
     }
 
-    public List<Student> getAllStudents() {
+    public List<StudentOutput> getAllStudents() {
         logger.debug("Attempting to get all Students");
         try{
-            return this.studentRepository.findAll();
+          List<Student> students=this.studentRepository.findAll();
+            return students.stream()
+                    .map(StudentOutput::studentOutputModal)
+                    .collect(Collectors.toList());
         }catch (Exception e){
             throw new RuntimeException(e.getMessage());
         }
     }
 
-    public Student getStudentById(Long id) {
+    public StudentOutput getStudentById(Long id) {
         logger.debug("Attempting to get Student by ID {}", id);
         try {
-            return this.studentRepository.findStudentsByStudentId(id);
+            return StudentOutput.studentOutputModal(this.studentRepository.findStudentsByStudentId(id));
         }catch (Exception e){
             throw new RuntimeException(e.getMessage());
         }
     }
 
-    public Student addStudent(CreateStudent studentModal) {
+    public void addStudent(CreateStudent studentModal) {
         logger.debug("Attempting to add Student");
         try {
-            boolean studentExist = this.studentRepository.existsStudentByFirstName(studentModal.getFirstName()) || this.studentRepository.existsStudentsByLastName(studentModal.getLastName());
+            boolean studentExist = this.studentRepository.existsStudentByFirstName(studentModal.getFirstName()) && this.studentRepository.existsStudentsByLastName(studentModal.getLastName());
 
             if (studentExist) {
                 throw new RuntimeException("Student already exists");
@@ -67,7 +71,8 @@ public class StudentService {
             student.setGender(studentModal.getGender());
             student.setSection(section);
 
-            return studentRepository.save(student);
+          studentRepository.save(student);
+          return ;
 
         }catch (Exception e){
             throw new RuntimeException(e.getMessage());
@@ -75,11 +80,22 @@ public class StudentService {
 
     }
 
-    public Student updateStudent(Student student) {
+    public StudentOutput updateStudent(CreateStudent student,Long id) {
         logger.debug("Attempting to update Student");
 
         try {
-            return this.studentRepository.save(student);
+            Student oldStudent=this.studentRepository.findStudentByStudentId(id);
+            SchoolSection section=this.schoolSectionRepository.findBySectionId(student.getSectionId());
+            Teacher teacher=this.teacherRepository.findTeacherByTeacherId(student.getTeacherId());
+            oldStudent.setFirstName(student.getFirstName());
+            oldStudent.setLastName(student.getLastName());
+            oldStudent.setDob(student.getDob());
+            oldStudent.setGender(student.getGender());
+            oldStudent.setSection(section);
+            oldStudent.setTeacher(teacher);
+            studentRepository.save(oldStudent);
+
+            return StudentOutput.studentOutputModal(oldStudent);
         }
         catch (Exception e){
             throw new RuntimeException(e.getMessage());

@@ -3,6 +3,7 @@ package com.example.demo.data.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -19,6 +20,7 @@ import java.util.List;
 @Getter
 @Setter
 @Accessors(chain = true)
+@ToString(exclude = {"refreshTokens"})
 public class Users implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -43,7 +45,7 @@ public class Users implements UserDetails {
     private Date updatedAt;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<RefreshToken> refreshTokens = new ArrayList<>();
+    private List<RefreshToken> refreshTokens ;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
