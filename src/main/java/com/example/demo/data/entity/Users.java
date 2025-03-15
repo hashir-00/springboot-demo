@@ -45,7 +45,7 @@ public class Users implements UserDetails {
     private Date updatedAt;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<RefreshToken> refreshTokens = new ArrayList<>();
+    private List<RefreshToken> refreshTokens ;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
