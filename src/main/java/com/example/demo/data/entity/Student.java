@@ -30,6 +30,7 @@ public class Student {
     @Column(name = "dob", nullable = false)
     private Date dob;
 
+
     @Column(name = "gender", length = 1)
     private String gender;
 

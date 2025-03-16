@@ -13,4 +13,5 @@ public class CreateUser {
     private String password;
 
     private String fullName;
+
 }

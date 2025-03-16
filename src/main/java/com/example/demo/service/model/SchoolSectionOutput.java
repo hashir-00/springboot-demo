@@ -27,6 +27,7 @@ public class SchoolSectionOutput {
 
     private TeacherOutPut teacher;
 
+
     public static SchoolSectionOutput schoolSectionOutput(SchoolSection schoolSection) {
         SchoolSectionOutput schoolSectionOutput = new SchoolSectionOutput();
         schoolSectionOutput.setSectionId(schoolSection.getSectionId());
