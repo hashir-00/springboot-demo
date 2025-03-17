@@ -5,14 +5,10 @@ import com.example.demo.data.repository.SchoolSectionRepository;
 import com.example.demo.data.repository.StudentRepository;
 import com.example.demo.data.repository.TeacherRepository;
 import com.example.demo.service.model.SchoolSectionModal;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Service
 public class SchoolSectionService {

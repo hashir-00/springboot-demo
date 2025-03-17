@@ -8,10 +8,9 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 public class CreateUser {
-    private String email;
+  private String email;
 
-    private String password;
+  private String password;
 
-    private String fullName;
-
+  private String fullName;
 }

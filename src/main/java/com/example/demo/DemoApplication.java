@@ -10,7 +10,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-
 @SpringBootApplication
 @EnableWebMvc
 @EnableJpaRepositories(basePackages = "com.example.demo.data.repository")

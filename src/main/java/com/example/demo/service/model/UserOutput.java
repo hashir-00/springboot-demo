@@ -1,10 +1,8 @@
 package com.example.demo.service.model;
 
 import com.example.demo.data.entity.Users;
-import lombok.Data;
-
-
 import java.util.Date;
+import lombok.Data;
 
 @Data
 public class UserOutput {

@@ -8,12 +8,11 @@ import com.example.demo.data.repository.StudentRepository;
 import com.example.demo.data.repository.TeacherRepository;
 import com.example.demo.service.model.CreateStudent;
 import com.example.demo.service.model.StudentOutput;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class StudentService {

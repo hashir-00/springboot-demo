@@ -1,72 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog
-        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
 
     <!-- Create the function to generate the username -->
     <changeSet id="1" author="your_name">
         <sql endDelimiter="$">
-            CREATE OR REPLACE FUNCTION generate_unique_username() RETURNS TRIGGER AS $$
+            CREATE
+            OR REPLACE FUNCTION generate_unique_username() RETURNS TRIGGER AS $$
             DECLARE
             last_letter CHAR;
-                new_letter CHAR;
-                date_prefix TEXT;
-                actual_date TIMESTAMP;
+                new_letter
+            CHAR;
+                date_prefix
+            TEXT;
+                actual_date
+            TIMESTAMP;
             BEGIN
-                actual_date := COALESCE(NEW.created_at, NOW());
-                date_prefix := TO_CHAR(actual_date, 'DDMMYYYY');
+                actual_date
+            := COALESCE(NEW.created_at, NOW());
+                date_prefix
+            := TO_CHAR(actual_date, 'DDMMYYYY');
 
                 -- Get the last letter used in the username for the given date prefix
-            SELECT SUBSTRING(username FROM 9 FOR 1) INTO last_letter
+            SELECT SUBSTRING(username FROM 9 FOR 1)
+            INTO last_letter
             FROM users
             WHERE username LIKE date_prefix || '%'
-            ORDER BY username DESC
-                LIMIT 1;
+            ORDER BY username DESC LIMIT 1;
 
             -- If no letter exists or it's an empty string, start with 'A'
-            IF last_letter IS NULL OR last_letter = '' THEN
+            IF
+            last_letter IS NULL OR last_letter = '' THEN
                     new_letter := 'A';
             ELSE
                     new_letter := CHR(ASCII(last_letter) + 1);
-                    IF new_letter > 'Z' THEN
+                    IF
+            new_letter > 'Z' THEN
                         new_letter := 'A';
             END IF;
             END IF;
 
-                NEW.username := date_prefix || new_letter;
+                NEW.username
+            := date_prefix || new_letter;
             RETURN NEW;
             END;
-            $$ LANGUAGE plpgsql;
+            $$
+            LANGUAGE plpgsql;
         </sql>
     </changeSet>
 
     <!-- Create the trigger that generates the username when a new user is inserted -->
-<!--    <changeSet id="2" author="your_name">-->
-<!--        <sql>-->
-<!--            CREATE TRIGGER set_username_before_insert-->
-<!--                BEFORE INSERT ON users-->
-<!--                FOR EACH ROW-->
-<!--                WHEN (NEW.username IS NULL OR NEW.username = '')-->
-<!--                EXECUTE FUNCTION generate_unique_username();-->
-<!--        </sql>-->
-<!--    </changeSet>-->
+    <!--    <changeSet id="2" author="your_name">-->
+    <!--        <sql>-->
+    <!--            CREATE TRIGGER set_username_before_insert-->
+    <!--                BEFORE INSERT ON users-->
+    <!--                FOR EACH ROW-->
+    <!--                WHEN (NEW.username IS NULL OR NEW.username = '')-->
+    <!--                EXECUTE FUNCTION generate_unique_username();-->
+    <!--        </sql>-->
+    <!--    </changeSet>-->
 
-<!--    <changeSet id="drop" author="">-->
-<!--        <sql>-->
-<!--            TRUNCATE TABLE INTERFACE_DATABASECHANGELOGLOCK-->
-<!--        </sql>-->
-<!--    </changeSet>-->
+    <!--    <changeSet id="drop" author="">-->
+    <!--        <sql>-->
+    <!--            TRUNCATE TABLE INTERFACE_DATABASECHANGELOGLOCK-->
+    <!--        </sql>-->
+    <!--    </changeSet>-->
 
     <!-- Update existing users with a NULL username, if any -->
     <changeSet id="3" author="your_name">
         <sql>
-         CREATE TRIGGER set_username_before_insert_update
-BEFORE INSERT OR UPDATE ON users
-                     FOR EACH ROW
-                     WHEN (NEW.username IS NULL OR NEW.username = '')
-                     EXECUTE FUNCTION generate_unique_username();
+            CREATE TRIGGER set_username_before_insert_update
+                BEFORE INSERT OR
+            UPDATE ON users
+                FOR EACH ROW
+                WHEN (NEW.username IS NULL OR NEW.username = '')
+                EXECUTE FUNCTION generate_unique_username();
         </sql>
     </changeSet>
 

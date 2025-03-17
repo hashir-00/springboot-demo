@@ -3,12 +3,11 @@ package com.example.demo.web.controller;
 
 import com.example.demo.service.SchoolSectionService;
 import com.example.demo.service.model.SchoolSectionModal;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/schoolSection")

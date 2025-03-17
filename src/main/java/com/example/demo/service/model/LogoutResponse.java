@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 @Setter
 @Accessors(chain = true)
 public class LogoutResponse {
-    private HttpStatus status;
-    private String message;
-
+  private HttpStatus status;
+  private String message;
 }

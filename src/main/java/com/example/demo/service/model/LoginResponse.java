@@ -11,9 +11,9 @@ import java.util.UUID;
 @Setter
 @Accessors(chain = true)
 public class LoginResponse {
-    private String token;
+  private String token;
 
-    private long expiresIn;
+  private long expiresIn;
 
-    private UUID refreshToken;
+  private UUID refreshToken;
 }

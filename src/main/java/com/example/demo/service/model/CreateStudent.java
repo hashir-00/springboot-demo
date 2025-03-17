@@ -1,10 +1,9 @@
 package com.example.demo.service.model;
 
+import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import java.util.Date;
-
 
 @Setter
 @Getter

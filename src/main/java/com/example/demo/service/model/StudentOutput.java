@@ -1,15 +1,8 @@
 package com.example.demo.service.model;
 
-import com.example.demo.data.entity.SchoolSection;
 import com.example.demo.data.entity.Student;
-import com.example.demo.data.entity.Teacher;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import lombok.Data;
-
 import java.util.Date;
+import lombok.Data;
 
 @Data
 public class StudentOutput {

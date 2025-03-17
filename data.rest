@@ -5,9 +5,9 @@ POST http://localhost:8080/schoolSection
 Content-Type: application/json
 
 {
-"classNumber":"24",
-"classType":"F",
-"name":"Advance"
+  "classNumber": "24",
+  "classType": "F",
+  "name": "Advance"
 }
 
 ###postresq signup###
@@ -15,9 +15,9 @@ POST http://localhost:8005/auth/signup
 Content-Type: application/json
 
 {
-"email":"hashir@123.com",
-"password":"Test@123",
-"fullName":"hashir"
+  "email": "hashir@123.com",
+  "password": "Test@123",
+  "fullName": "hashir"
 }
 
 
@@ -32,7 +32,9 @@ Content-Type: application/json
   "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoYXNoaXJAMTIzLmNvbSIsImlhdCI6MTc0MTcyMzYxOCwiZXhwIjoxNzQxNzI3MjE4fQ.KEsJSxFK5hBfK8uqmqDIM2AEL-HP2RZc0K3Vf1n0yWc"
 }
 
-> {% client.global.set("auth_token", response.body.token); %}
+> {%
+    client.global.set("auth_token", response.body.token);
+%}
 
 ###test unauthorized###
 GET http://localhost:8005/users/

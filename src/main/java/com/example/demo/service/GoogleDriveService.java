@@ -28,117 +28,115 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-
 @Component
 public class GoogleDriveService {
-    private final Logger logger = LoggerFactory.getLogger(GoogleDriveService.class);
+  private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
+  private static final String SERVICE_ACCOUNT_KEY_PATH =
+      "src/main/resources/credentials.json"; // Your JSON Key Path
+  @Value("${MY_APPLICATION_NAME}")
+  private static String APPLICATION_NAME;
+  private final Logger logger = LoggerFactory.getLogger(GoogleDriveService.class);
+  private final Drive driveService = getDriveService();
+  @Value("${MY_GOOGLE_DRIVE_ID}")
+  private String DRIVE_FOLDER_ID;
 
-    @Value("${MY_APPLICATION_NAME}")
-    private static String APPLICATION_NAME ;
+  private Drive getDriveService() {
+    try {
+      HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+      InputStream serviceAccountStream = new FileInputStream(SERVICE_ACCOUNT_KEY_PATH);
 
-    private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
+      GoogleCredentials credentials =
+          GoogleCredentials.fromStream(serviceAccountStream)
+              .createScoped(Collections.singleton(DriveScopes.DRIVE_FILE));
+      //                  .createScoped(List.of(DriveScopes.DRIVE))
+      //                  .createScoped(List.of(DriveScopes.DRIVE_APPDATA));
 
-    private static final String SERVICE_ACCOUNT_KEY_PATH = "src/main/resources/credentials.json"; // Your JSON Key Path
+      return new Drive.Builder(httpTransport, JSON_FACTORY, new HttpCredentialsAdapter(credentials))
+          .setApplicationName(APPLICATION_NAME)
+          .build();
 
-    @Value("${MY_GOOGLE_DRIVE_ID}")
-    private  String DRIVE_FOLDER_ID;
-
-    private  final Drive driveService =getDriveService();
-
-    private Drive getDriveService()  {
-      try {
-          HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-          InputStream serviceAccountStream = new FileInputStream(SERVICE_ACCOUNT_KEY_PATH);
-
-          GoogleCredentials credentials = GoogleCredentials
-                  .fromStream(serviceAccountStream)
-                  .createScoped(Collections.singleton(DriveScopes.DRIVE_FILE));
-//                  .createScoped(List.of(DriveScopes.DRIVE))
-//                  .createScoped(List.of(DriveScopes.DRIVE_APPDATA));
-
-          return new Drive.Builder(httpTransport, JSON_FACTORY, new HttpCredentialsAdapter(credentials))
-                  .setApplicationName(APPLICATION_NAME)
-                  .build();
-
-      }catch (Exception e) {
-          logger.debug("Error creating Drive service{}", e.getMessage());
-          return null;
-      }
+    } catch (Exception e) {
+      logger.debug("Error creating Drive service{}", e.getMessage());
+      return null;
     }
+  }
 
-    public UploadedFileResponse uploadFile(MultipartFile file) {
-        try {
-            File fileMetadata = new File();
-            fileMetadata.setName(file.getOriginalFilename());
-            fileMetadata.setParents(Collections.singletonList(DRIVE_FOLDER_ID)); // Save inside folder
+  public UploadedFileResponse uploadFile(MultipartFile file) {
+    try {
+      File fileMetadata = new File();
+      fileMetadata.setName(file.getOriginalFilename());
+      fileMetadata.setParents(Collections.singletonList(DRIVE_FOLDER_ID)); // Save inside folder
 
-            InputStreamContent content = new InputStreamContent(
-                    file.getContentType(), file.getInputStream()
-            );
+      InputStreamContent content =
+          new InputStreamContent(file.getContentType(), file.getInputStream());
 
-            assert driveService != null;
-            File uploadedFile = driveService.files().create(fileMetadata, content)
-                    .setFields("id,webViewLink,name,size")
-                    .execute();
-            logger.debug("Uploaded Successfully!");
+      assert driveService != null;
+      File uploadedFile =
+          driveService
+              .files()
+              .create(fileMetadata, content)
+              .setFields("id,webViewLink,name,size")
+              .execute();
+      logger.debug("Uploaded Successfully!");
+      UploadedFileResponse uploadedFileResponse = new UploadedFileResponse();
+      uploadedFileResponse.setFileId(uploadedFile.getId());
+      uploadedFileResponse.setWebViewLink(uploadedFile.getWebViewLink());
+      uploadedFileResponse.setName(uploadedFile.getName());
+      uploadedFileResponse.setSize(uploadedFile.getSize());
+
+      return uploadedFileResponse;
+    } catch (Exception e) {
+      logger.debug("Error creating file {}", e.getMessage());
+      throw new RuntimeException(e);
+    }
+  }
+
+  public List<UploadedFileResponse> getAllFilesInDrive() {
+    logger.debug("getAllFilesInDrive called");
+    try {
+      assert driveService != null;
+      FileList files =
+          driveService
+              .files()
+              .list()
+              .setSpaces("drive")
+              .setFields("nextPageToken, files(id,name,size,webViewLink)")
+              .setPageSize(10)
+              .execute();
+      return new ArrayList<>() {
+        {
+          for (File file : files.getFiles()) {
             UploadedFileResponse uploadedFileResponse = new UploadedFileResponse();
-            uploadedFileResponse.setFileId(uploadedFile.getId());
-            uploadedFileResponse.setWebViewLink(uploadedFile.getWebViewLink());
-            uploadedFileResponse.setName(uploadedFile.getName());
-            uploadedFileResponse.setSize(uploadedFile.getSize());
-
-            return uploadedFileResponse;
-        } catch (Exception e) {
-        logger.debug("Error creating file {}", e.getMessage());
-           throw new RuntimeException(e);
+            uploadedFileResponse.setFileId(file.getId());
+            uploadedFileResponse.setName(file.getName());
+            uploadedFileResponse.setSize(file.getSize());
+            uploadedFileResponse.setWebViewLink(file.getWebViewLink());
+            add(uploadedFileResponse);
+          }
         }
+      };
+
+    } catch (Exception e) {
+      logger.error("Error getting fileList {}", e.getMessage());
+      throw new RuntimeException(e);
     }
+  }
 
-    public List<UploadedFileResponse> getAllFilesInDrive() {
-        logger.debug("getAllFilesInDrive called");
-        try {
-            assert driveService != null;
-            FileList files = driveService.files().list()
-                  .setSpaces("drive")
-                    .setFields("nextPageToken, files(id,name,size,webViewLink)")
-                    .setPageSize(10)
-                    .execute();
-            return new ArrayList<>() {{
-                for (File file : files.getFiles()) {
-                    UploadedFileResponse uploadedFileResponse = new UploadedFileResponse();
-                    uploadedFileResponse.setFileId(file.getId());
-                    uploadedFileResponse.setName(file.getName());
-                    uploadedFileResponse.setSize(file.getSize());
-                    uploadedFileResponse.setWebViewLink(file.getWebViewLink());
-                    add(uploadedFileResponse);
-                }
-
-            }};
-
-
-        } catch (Exception e) {
-            logger.error("Error getting fileList {}", e.getMessage());
-            throw new RuntimeException(e);
-        }
+  public UploadedFileResponse getFileById(String fileId) {
+    logger.debug("get file by id {}", fileId);
+    try {
+      assert driveService != null;
+      File result =
+          driveService.files().get(fileId).setFields("name, id, size, webViewLink").execute();
+      UploadedFileResponse response = new UploadedFileResponse();
+      response.setFileId(fileId);
+      response.setSize(result.getSize());
+      response.setWebViewLink(result.getWebViewLink());
+      response.setName(result.getName());
+      return response;
+    } catch (Exception e) {
+      logger.debug("Error getting file {}", e.getMessage());
+      throw new RuntimeException(e);
     }
-
-   public  UploadedFileResponse getFileById(String fileId) {
-        logger.debug("get file by id {}", fileId);
-        try {
-            assert driveService != null;
-            File result = driveService.files().get(fileId)
-                    .setFields("name, id, size, webViewLink")
-                    .execute();
-            UploadedFileResponse response=  new UploadedFileResponse();
-            response.setFileId(fileId);
-            response.setSize(result.getSize());
-            response.setWebViewLink(result.getWebViewLink());
-            response.setName(result.getName());
-            return response ;
-        }catch (Exception e) {
-            logger.debug("Error getting file {}", e.getMessage());
-            throw new RuntimeException(e);
-        }
-   }
-
+  }
 }
