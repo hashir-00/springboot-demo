@@ -27,11 +27,11 @@
 - JWT-based authentication
 - Swagger API documentation
 - Logging for all controllers
-- sanitized inputs
+- Sanitized inputs
 - PDF upload system
 - Google Drive integration
-- migration for Specific ID format
-- Logging for all controllers
+- Migration for Specific ID format
+- Dockerize
 - CICD in cloud
 
 ---
