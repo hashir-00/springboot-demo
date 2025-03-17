@@ -65,6 +65,7 @@
     <logger name="org.apache.catalina" level="WARN" /> <!-- Suppress Tomcat logs -->
     <logger name="com.zaxxer.hikari" level="WARN" /> <!-- Suppress HikariCP logs -->
     <logger name="org.springframework.security" level="WARN" /> <!-- Suppress Spring Security logs -->
+    <logger name="liquibase" level="ERROR"/>
 
     <logger name="com.example.demo.controllers" level="DEBUG" />
 

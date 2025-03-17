@@ -1,6 +1,5 @@
 package com.example.demo.configs;
 
-import com.example.demo.data.repository.UserRepository;
 import com.example.demo.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +25,8 @@ public class ApplicationConfiguration {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
+
+
 
 
     @Bean

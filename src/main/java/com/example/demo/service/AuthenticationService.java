@@ -72,7 +72,7 @@ public class AuthenticationService {
             logger.info("User created successfully with email: {}", input.getEmail());
             return savedUser;
         } catch (Exception e) {
-            logger.error("Error occurred while creating user with email {}: {}", input.getEmail(), e.getMessage(), e);
+            logger.error("Error occurred while creating user with email {}: {}", input.getEmail(), e.getMessage());
             return null;
         }
     }
