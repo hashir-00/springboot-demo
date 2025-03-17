@@ -1,10 +1,8 @@
 package com.example.demo.utils;
 
-import org.springframework.context.annotation.Bean;
 
 import java.util.HashSet;
 import java.util.Set;
-
 
 public class TokenBlackList {
 

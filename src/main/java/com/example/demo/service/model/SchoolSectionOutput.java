@@ -1,11 +1,8 @@
 package com.example.demo.service.model;
 
 import com.example.demo.data.entity.SchoolSection;
-import com.example.demo.data.entity.Student;
-import com.example.demo.data.entity.Teacher;
-import lombok.Data;
-
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class SchoolSectionOutput {

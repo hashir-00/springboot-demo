@@ -6,6 +6,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
@@ -19,75 +20,66 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
-import java.io.IOException;
-
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class.getName());
+  private static final Logger logger =
+      LoggerFactory.getLogger(JwtAuthenticationFilter.class.getName());
 
+  private final HandlerExceptionResolver handlerExceptionResolver;
+  private final JwtService jwtService;
+  private final UserDetailsService userDetailsService;
 
-    private final HandlerExceptionResolver handlerExceptionResolver;
-    private final JwtService jwtService;
-    private final UserDetailsService userDetailsService;
+  public JwtAuthenticationFilter(
+      JwtService jwtService,
+      UserDetailsService userDetailsService,
+      HandlerExceptionResolver handlerExceptionResolver) {
+    this.jwtService = jwtService;
+    this.userDetailsService = userDetailsService;
+    this.handlerExceptionResolver = handlerExceptionResolver;
+  }
 
-    public JwtAuthenticationFilter(
-            JwtService jwtService,
-            UserDetailsService userDetailsService,
-            HandlerExceptionResolver handlerExceptionResolver
-    ) {
-        this.jwtService = jwtService;
-        this.userDetailsService = userDetailsService;
-        this.handlerExceptionResolver = handlerExceptionResolver;
+  @Override
+  protected void doFilterInternal(
+      @NonNull HttpServletRequest request,
+      @NonNull HttpServletResponse response,
+      @NonNull FilterChain filterChain)
+      throws ServletException, IOException {
+
+    final String authHeader = request.getHeader("Authorization");
+    if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+      filterChain.doFilter(request, response);
+      return;
     }
 
-    @Override
-    protected void doFilterInternal(
-            @NonNull HttpServletRequest request,
-            @NonNull HttpServletResponse response,
-            @NonNull FilterChain filterChain
-    ) throws ServletException, IOException {
+    try {
+      final String jwt = authHeader.substring(7);
+      final String userEmail = jwtService.extractUsername(jwt);
 
+      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
+      if (userEmail != null && authentication == null) {
+        UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
 
-        final String authHeader = request.getHeader("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
-            return;
+        if (jwtService.isTokenValid(jwt, userDetails)) {
+          UsernamePasswordAuthenticationToken authToken =
+              new UsernamePasswordAuthenticationToken(
+                  userDetails, null, userDetails.getAuthorities());
+
+          authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+          SecurityContextHolder.getContext().setAuthentication(authToken);
         }
+        //                return;
+      }
 
-
-        try {
-            final String jwt = authHeader.substring(7);
-            final String userEmail = jwtService.extractUsername(jwt);
-
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-            if (userEmail != null && authentication == null) {
-                UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
-
-
-                if (jwtService.isTokenValid(jwt, userDetails)) {
-                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                            userDetails,
-                            null,
-                            userDetails.getAuthorities()
-                    );
-
-                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
-                }
-//                return;
-            }
-
-            filterChain.doFilter(request, response);
-        } catch (ExpiredJwtException e) {
-            logger.warn("JWT expired: {}", e.getMessage());
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Token has expired");
-        } catch (Exception e) {
-            logger.error("Error in JwtAuthenticationFilter: {}", e.getMessage());
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().write("An unexpected error occurred");
-        }
+      filterChain.doFilter(request, response);
+    } catch (ExpiredJwtException e) {
+      logger.warn("JWT expired: {}", e.getMessage());
+      response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+      response.getWriter().write("Token has expired");
+    } catch (Exception e) {
+      logger.error("Error in JwtAuthenticationFilter: {}", e.getMessage());
+      response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+      response.getWriter().write("An unexpected error occurred");
     }
+  }
 }

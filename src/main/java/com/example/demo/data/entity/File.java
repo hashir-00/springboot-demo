@@ -12,19 +12,19 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "media_files")
 public class File {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
 
-    @Column(name = "media_title", nullable = false)
-    private String mediaTitle;
+  @Column(name = "media_title", nullable = false)
+  private String mediaTitle;
 
-    @Column(name = "media_url", nullable = false)
-    private String mediaUrl;
+  @Column(name = "media_url", nullable = false)
+  private String mediaUrl;
 
-    @Column(name = "media_file_id")
-    private String mediaFileId;
+  @Column(name = "media_file_id")
+  private String mediaFileId;
 
-    @Column(name="media_Size")
-    private float mediaSize;
+  @Column(name = "media_Size")
+  private float mediaSize;
 }

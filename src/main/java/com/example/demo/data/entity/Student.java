@@ -2,10 +2,8 @@ package com.example.demo.data.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.util.Date;
-
+import lombok.*;
 
 @Entity
 @Table(name = "student")

@@ -14,28 +14,24 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableJpaAuditing
 public class ApplicationConfiguration {
 
+  @Bean
+  BCryptPasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
+  @Bean
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
+      throws Exception {
+    return config.getAuthenticationManager();
+  }
 
-    @Bean
-    BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+  @Bean
+  AuthenticationProvider authenticationProvider(UserService userService) throws Exception {
+    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
-    }
+    authProvider.setUserDetailsService(userService);
+    authProvider.setPasswordEncoder(passwordEncoder());
 
-
-
-
-    @Bean
-    AuthenticationProvider authenticationProvider(UserService userService) throws Exception {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-
-        authProvider.setUserDetailsService(userService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-
-        return authProvider;
-    }
+    return authProvider;
+  }
 }

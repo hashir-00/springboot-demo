@@ -8,14 +8,11 @@ import com.example.demo.service.model.LoginResponse;
 import com.example.demo.service.model.LoginUser;
 import com.example.demo.service.model.LogoutResponse;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-
 import java.util.UUID;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/auth")
 @RestController
