@@ -35,3 +35,4 @@ build/
 ### env ###
 .env
 logs.log
+src/main/resources/credentials.json

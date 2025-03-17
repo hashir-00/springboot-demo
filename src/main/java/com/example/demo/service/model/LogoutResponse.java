@@ -11,4 +11,5 @@ import org.springframework.http.HttpStatus;
 public class LogoutResponse {
     private HttpStatus status;
     private String message;
+
 }

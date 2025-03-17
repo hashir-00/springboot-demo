@@ -37,6 +37,4 @@ public class SchoolSection {
     private Teacher teacher;
 
 
-
-
 }
