@@ -119,7 +119,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: demo-war
-          path: "/demo.war"
+          path: "/target/demo.war"
           if-no-files-found: error
 
       - name: Run Tests (Optional)
