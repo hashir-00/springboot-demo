@@ -28,6 +28,11 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: hashirhalaldeen00/demo
+      - name: Build Spring Boot application
+        run: |
+          chmod +x mvnw
+          ./mvnw clean package -DskipTests
+
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
