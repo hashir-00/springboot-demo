@@ -48,8 +48,7 @@ jobs:
 
       - name: Build Spring Boot application
         run: |
-          chmod +x mvnw
-          ./mvnw clean package -DskipTests
+            mvn clean package
 
 
       - name: Build and push Docker image
