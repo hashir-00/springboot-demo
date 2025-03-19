@@ -69,16 +69,15 @@
 
 #       - name: Output Docker image details
 #         run: echo "Docker image built and pushed successfully!"
-name: Build, Push, and Deploy Spring Boot App
+name: Build, Test, and Run on PR
 
 on:
-  push:
-    branches:
-      - master  # Change this to the branch you want to deploy from
+  pull_request:
+    branches: [ master ]  # Runs on PRs targeting master
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
+  build-and-run:
+    runs-on: ubuntu-latest  # Use your ubuntu-latest runner
 
     steps:
       - name: Checkout repository
