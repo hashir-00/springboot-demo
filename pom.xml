@@ -28,6 +28,7 @@
     </scm>
     <properties>
         <java.version>23</java.version>
+        <spring.profiles.active>local,no-liquibase</spring.profiles.active>
     </properties>
     <dependencies>
         <dependency>
