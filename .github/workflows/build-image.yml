@@ -98,6 +98,26 @@ jobs:
             mvn clean package
 
 
+      - name: Create .env file
+        run: |
+          echo "MY_DB_URL=${{ secrets.MY_DB_URL }}" >> .env
+          echo "MY_DB_USERNAME=${{ secrets.MY_DB_USERNAME }}" >> .env
+          echo "MY_DB_PASSWORD=${{ secrets.MY_DB_PASSWORD }}" >> .env
+          echo "MY_GITHUB_OAUTH_CLIENT_ID=${{ secrets.MY_GITHUB_OAUTH_CLIENT_ID }}" >> .env
+          echo "MY_GITHUB_OAUTH_CLIENT_SECRET=${{ secrets.MY_GITHUB_OAUTH_CLIENT_SECRET }}" >> .env
+          echo "MY_SERVER_PORT=${{ secrets.MY_SERVER_PORT }}" >> .env
+          echo "MY_JWT_SECURITY_KEY=${{ secrets.MY_JWT_SECURITY_KEY }}" >> .env
+          echo "MY_JWT_SECURITY_KEY_EXP_TIME=${{ secrets.MY_JWT_SECURITY_KEY_EXP_TIME }}" >> .env
+          echo "MY_REFRESH_TOKEN_TTL=${{ secrets.MY_REFRESH_TOKEN_TTL }}" >> .env
+          echo "MY_CLIENT_URL=${{ secrets.MY_CLIENT_URL }}" >> .env
+          echo "MY_GOOGLE_DRIVE_ID=${{ secrets.MY_GOOGLE_DRIVE_ID }}" >> .env
+          echo "MY_APPLICATION_NAME=${{ secrets.MY_APPLICATION_NAME }}" >> .env
+
+      - name: Build Spring Boot application
+        run: |
+            mvn clean package
+
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
