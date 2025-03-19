@@ -5,6 +5,7 @@ on:
     branches: [ master ]
     paths:
       - 'src/**'
+      - '.github/**'
       - '.github/workflows/app-workflow.yaml'
 
 jobs:
