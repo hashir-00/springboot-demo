@@ -76,9 +76,8 @@ on:
     branches: [ master ]  # Runs on PRs targeting master
 
 jobs:
-  build-and-run:
-    runs-on: self-hosted  # Use your self-hosted runner
-
+  build:
+    runs-on: ububuntu-latest # Use your self-hosted runner
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -108,16 +107,52 @@ jobs:
       - name: Build with Maven
         run: mvn clean package
 
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: jar-file
+          path: target/*.jar
+
+  run-app:
+    needs: build  # Runs only if the build job succeeds
+    runs-on: ububuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: jar-file
+          path: target/
+
       - name: Run Application
         run: |
           nohup java -jar target/*.jar &  # Run in background
           sleep 5  # Wait for it to start
           ps aux | grep java  # Debug: Show running Java processes
-          # curl -f http://localhost:${{ secrets.MY_SERVER_PORT }}/ || curl -f http://localhost:${{ secrets.MY_SERVER_PORT }}/actuator/health || exit 1
-      
-      - name: Run Tests (Optional)
-        run: mvn test
+          curl -f http://localhost:${{ secrets.MY_SERVER_PORT }}/ || curl -f http://localhost:${{ secrets.MY_SERVER_PORT }}/actuator/health || exit 1
 
-      - name: Cleanup Process
-        if: always()
+  # test:
+  #   needs: build  # Runs after the build job
+  #   runs-on: ububuntu-latest
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
+
+  #     - name: Download Build Artifacts
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: jar-file
+  #         path: target/
+
+  #     - name: Run Tests
+  #       run: mvn test
+
+  cleanup:
+    needs: [run-app]  # Ensures cleanup runs after both jobs
+    runs-on: self-hosted
+    if: always()
+    steps:
+      - name: Stop Running Application
         run: pkill -f 'java -jar target' || echo "No process found"
