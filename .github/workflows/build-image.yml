@@ -69,7 +69,7 @@
 
 #       - name: Output Docker image details
 #         run: echo "Docker image built and pushed successfully!"
-# name: Build, Test, and Run on PR
+ name: Build, Test, and Run on PR
 
  on:
    push:
