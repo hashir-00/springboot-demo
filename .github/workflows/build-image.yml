@@ -1,243 +1,12 @@
-# name: Build and Push Docker Image
-
-# on:
-#   push:
-#     branches: [ master ]
-#     environment: development
-#     paths:
-#       - 'src/**'
-#       - '.github/**'
-#       - '.github/workflows/app-workflow.yaml'
-
-# jobs:
-#   build-and-push:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout repository
-#         uses: actions/checkout@v3
-
-#       - name: Set up Docker Buildx
-#         uses: docker/setup-buildx-action@v2
-
-#       - name: Log in to Docker Hub
-#         uses: docker/login-action@v2
-#         with:
-#           username: ${{ secrets.DOCKER_USERNAME }}
-#           password: ${{ secrets.DOCKER_PASSWORD }}
-
-#       - name: Extract metadata (tags, labels) for Docker
-#         id: meta
-#         uses: docker/metadata-action@v4
-#         with:
-#           images: hashirhalaldeen00/demo
-
-#       - name: Create .env file
-#         run: |
-#           echo "MY_DB_URL=${{ secrets.MY_DB_URL }}" >> .env
-#           echo "MY_DB_USERNAME=${{ secrets.MY_DB_USERNAME }}" >> .env
-#           echo "MY_DB_PASSWORD=${{ secrets.MY_DB_PASSWORD }}" >> .env
-#           echo "MY_GITHUB_OAUTH_CLIENT_ID=${{ secrets.MY_GITHUB_OAUTH_CLIENT_ID }}" >> .env
-#           echo "MY_GITHUB_OAUTH_CLIENT_SECRET=${{ secrets.MY_GITHUB_OAUTH_CLIENT_SECRET }}" >> .env
-#           echo "MY_SERVER_PORT=${{ secrets.MY_SERVER_PORT }}" >> .env
-#           echo "MY_JWT_SECURITY_KEY=${{ secrets.MY_JWT_SECURITY_KEY }}" >> .env
-#           echo "MY_JWT_SECURITY_KEY_EXP_TIME=${{ secrets.MY_JWT_SECURITY_KEY_EXP_TIME }}" >> .env
-#           echo "MY_REFRESH_TOKEN_TTL=${{ secrets.MY_REFRESH_TOKEN_TTL }}" >> .env
-#           echo "MY_CLIENT_URL=${{ secrets.MY_CLIENT_URL }}" >> .env
-#           echo "MY_GOOGLE_DRIVE_ID=${{ secrets.MY_GOOGLE_DRIVE_ID }}" >> .env
-#           echo "MY_APPLICATION_NAME=${{ secrets.MY_APPLICATION_NAME }}" >> .env
-          
-#       - name: Set up JDK 23
-#         uses: actions/setup-java@v4
-#         with:
-#           java-version: '23'
-#           distribution: 'temurin'
-#           server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-#           settings-path: ${{ github.workspace }} # location for the settings.xml file
-
-#       - name: Build Spring Boot application
-#         run: |
-#             mvn clean package
-
-
-#       - name: Build and push Docker image
-#         uses: docker/build-push-action@v4
-#         with:
-#           context: .
-#           push: true
-#           tags: ${{ steps.meta.outputs.tags }}
-#           labels: ${{ steps.meta.outputs.labels }}
-
-#       - name: Output Docker image details
-#         run: echo "Docker image built and pushed successfully!"
-# name: Build, Test, and Run on PR
-#
-# on:
-#   push:
-#     branches: [ test ]  # Runs on PRs targeting master
-#
-# jobs:
-#   build-and-run:
-#     runs-on: ubuntu-latest  # Use your ubuntu-latest runner
-#
-#     steps:
-#       - name: Checkout repository
-#         uses: actions/checkout@v4
-#
-#       - name: Set up JDK 23
-#         uses: actions/setup-java@v4
-#         with:
-#           java-version: '23'
-#           distribution: 'temurin'
-#           cache: maven
-#
-#       - name: Create .env file
-#         run: |
-#           echo "MY_DB_URL=${{ secrets.MY_DB_URL }}" >> .env
-#           echo "MY_DB_USERNAME=${{ secrets.MY_DB_USERNAME }}" >> .env
-#           echo "MY_DB_PASSWORD=${{ secrets.MY_DB_PASSWORD }}" >> .env
-#           echo "MY_GITHUB_OAUTH_CLIENT_ID=${{ secrets.MY_GITHUB_OAUTH_CLIENT_ID }}" >> .env
-#           echo "MY_GITHUB_OAUTH_CLIENT_SECRET=${{ secrets.MY_GITHUB_OAUTH_CLIENT_SECRET }}" >> .env
-#           echo "MY_SERVER_PORT=${{ secrets.MY_SERVER_PORT }}" >> .env
-#           echo "MY_JWT_SECURITY_KEY=${{ secrets.MY_JWT_SECURITY_KEY }}" >> .env
-#           echo "MY_JWT_SECURITY_KEY_EXP_TIME=${{ secrets.MY_JWT_SECURITY_KEY_EXP_TIME }}" >> .env
-#           echo "MY_REFRESH_TOKEN_TTL=${{ secrets.MY_REFRESH_TOKEN_TTL }}" >> .env
-#           echo "MY_CLIENT_URL=${{ secrets.MY_CLIENT_URL }}" >> .env
-#           echo "MY_GOOGLE_DRIVE_ID=${{ secrets.MY_GOOGLE_DRIVE_ID }}" >> .env
-#           echo "MY_APPLICATION_NAME=${{ secrets.MY_APPLICATION_NAME }}" >> .env
-#
-#       - name: Build with Maven
-#         run: mvn clean package
-#
-#       - name: Set up Docker Buildx
-#         uses: docker/setup-buildx-action@v2
-#
-#       - name: Log in to Docker Hub
-#         uses: docker/login-action@v2
-#         with:
-#           username: ${{ secrets.DOCKER_USERNAME }}
-#           password: ${{ secrets.DOCKER_PASSWORD }}
-#
-#       - name: Extract metadata for Docker
-#         id: meta
-#         uses: docker/metadata-action@v4
-#         with:
-#           images: hashirhalaldeen00/demo
-#
-#       - name: Build and push Docker image
-#         uses: docker/build-push-action@v4
-#         with:
-#           context: .
-#           push: true
-#           tags: hashirhalaldeen00/demo:latest
-#
-#       - name: Deploy to VPS via SSH
-#         uses: appleboy/ssh-action@v0.1.10
-#         with:
-#           host: ${{ secrets.VPS_HOST }}
-#           username: ${{ secrets.VPS_USER }}
-#           password: ${{ secrets.VPS_PASSWORD }}
-#           script: |
-#             docker pull hashirhalaldeen00/demo:latest
-#             docker stop my-app || true
-#             docker rm my-app || true
-#             docker run -d --name my-app -p 8080:8005 --env-file .env hashirhalaldeen00/demo:latest
-#             docker system prune -af
-
-
-#name: Build, Test, and Run on PR
-#
-#on:
-#  push:
-#    branches: [ master ]  # Runs on PRs targeting master
-#
-#jobs:
-#  build-and-run:
-#    runs-on: ubuntu-latest  # Use your ubuntu-latest runner
-#
-#    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v4
-#
-#      - name: Set up JDK 23
-#        uses: actions/setup-java@v4
-#        with:
-#          java-version: '23'
-#          distribution: 'temurin'
-#          cache: maven
-#
-#      - name: Create .env file
-#        run: |
-#          echo "MY_DB_URL=${{ secrets.MY_DB_URL }}" >> .env
-#          echo "MY_DB_USERNAME=${{ secrets.MY_DB_USERNAME }}" >> .env
-#          echo "MY_DB_PASSWORD=${{ secrets.MY_DB_PASSWORD }}" >> .env
-#          echo "MY_GITHUB_OAUTH_CLIENT_ID=${{ secrets.MY_GITHUB_OAUTH_CLIENT_ID }}" >> .env
-#          echo "MY_GITHUB_OAUTH_CLIENT_SECRET=${{ secrets.MY_GITHUB_OAUTH_CLIENT_SECRET }}" >> .env
-#          echo "MY_SERVER_PORT=${{ secrets.MY_SERVER_PORT }}" >> .env
-#          echo "MY_JWT_SECURITY_KEY=${{ secrets.MY_JWT_SECURITY_KEY }}" >> .env
-#          echo "MY_JWT_SECURITY_KEY_EXP_TIME=${{ secrets.MY_JWT_SECURITY_KEY_EXP_TIME }}" >> .env
-#          echo "MY_REFRESH_TOKEN_TTL=${{ secrets.MY_REFRESH_TOKEN_TTL }}" >> .env
-#          echo "MY_CLIENT_URL=${{ secrets.MY_CLIENT_URL }}" >> .env
-#          echo "MY_GOOGLE_DRIVE_ID=${{ secrets.MY_GOOGLE_DRIVE_ID }}" >> .env
-#          echo "MY_APPLICATION_NAME=${{ secrets.MY_APPLICATION_NAME }}" >> .env
-#
-#      - name: Build with Maven
-#        run: mvn clean package
-#
-#      - name: Set up Docker Buildx
-#        uses: docker/setup-buildx-action@v2
-#
-#      - name: Log in to Docker Hub
-#        uses: docker/login-action@v2
-#        with:
-#          username: ${{ secrets.DOCKER_USERNAME }}
-#          password: ${{ secrets.DOCKER_PASSWORD }}
-#
-#      - name: Extract metadata for Docker
-#        id: meta
-#        uses: docker/metadata-action@v4
-#        with:
-#          images: hashirhalaldeen00/demo
-#
-#      - name: Build and push Docker image
-#        uses: docker/build-push-action@v4
-#        with:
-#          context: .
-#          push: true
-#          tags: hashirhalaldeen00/demo:latest
-#
-#      - name: Deploy to VPS via SSH
-#        uses: appleboy/ssh-action@v0.1.10
-#        with:
-#          host: ${{ secrets.VPS_HOST }}
-#          username: ${{ secrets.VPS_USER }}
-#          password: ${{ secrets.VPS_PASSWORD }}
-#          script: |
-#            # Create the directory if it doesn't exist
-#            mkdir -p /home/user/my-spring-boot-app/
-#
-#            # Upload the .jar file to the VPS
-#            scp target/demo-0.0.1-SNAPSHOT.jar ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/user/my-spring-boot-app/
-#
-#            # Upload the .env file to the VPS
-#            scp .env ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/user/my-spring-boot-app/.env
-#
-#            # Navigate to the app directory
-#            cd /home/user/my-spring-boot-app/
-#
-#            # Run the Spring Boot application in the background
-#            nohup java -jar demo-0.0.1-SNAPSHOT.jar --spring.config.location=/home/user/my-spring-boot-app/.env &
-#
-#            # Optional: Clean up any stopped containers (if applicable)
-#            docker system prune -af
-name: Build, Test, and Run on PR
+name: Build, Test, and Deploy on PR
 
 on:
   pull_request:
-    branches: [ test ]  # Runs on PRs targeting master
+    branches: [ test ]  # Runs on PRs targeting the 'test' branch
 
 jobs:
-  build-and-run:
-    runs-on: ubuntu-latest  # Use your ubuntu-latest runner
+  build-and-deploy:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
@@ -250,68 +19,48 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Create .env file
-        run: |
-          echo "MY_DB_URL=${{ secrets.MY_DB_URL }}" >> .env
-          echo "MY_DB_USERNAME=${{ secrets.MY_DB_USERNAME }}" >> .env
-          echo "MY_DB_PASSWORD=${{ secrets.MY_DB_PASSWORD }}" >> .env
-          echo "MY_GITHUB_OAUTH_CLIENT_ID=${{ secrets.MY_GITHUB_OAUTH_CLIENT_ID }}" >> .env
-          echo "MY_GITHUB_OAUTH_CLIENT_SECRET=${{ secrets.MY_GITHUB_OAUTH_CLIENT_SECRET }}" >> .env
-          echo "MY_SERVER_PORT=${{ secrets.MY_SERVER_PORT }}" >> .env
-          echo "MY_JWT_SECURITY_KEY=${{ secrets.MY_JWT_SECURITY_KEY }}" >> .env
-          echo "MY_JWT_SECURITY_KEY_EXP_TIME=${{ secrets.MY_JWT_SECURITY_KEY_EXP_TIME }}" >> .env
-          echo "MY_REFRESH_TOKEN_TTL=${{ secrets.MY_REFRESH_TOKEN_TTL }}" >> .env
-          echo "MY_CLIENT_URL=${{ secrets.MY_CLIENT_URL }}" >> .env
-          echo "MY_GOOGLE_DRIVE_ID=${{ secrets.MY_GOOGLE_DRIVE_ID }}" >> .env
-          echo "MY_APPLICATION_NAME=${{ secrets.MY_APPLICATION_NAME }}" >> .env
-
       - name: Build with Maven
-        run: mvn clean package
+        run: mvn clean package -DskipTests
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Extract metadata for Docker
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: hashirhalaldeen00/demo
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          push: true
-          tags: hashirhalaldeen00/demo:latest
-
-      - name: Deploy to VPS via SSH
+      - name: Deploy to VPS and Restart Spring Boot
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           password: ${{ secrets.VPS_PASSWORD }}
           script: |
-            # Create the directory if it doesn't exist
-            mkdir -p /home/user/my-spring-boot-app/
+            # Navigate to the application directory
+            cd /home/user/my-spring-boot-app || exit 1
 
-            # Upload the .jar file to the VPS
-            scp target/demo-0.0.1-SNAPSHOT.jar ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/user/my-spring-boot-app/
+            # Stop the running application
+            pkill -f 'java -jar' || echo "No process found"
 
-            # Upload the .env file to the VPS
-            scp .env ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/user/my-spring-boot-app/.env
+            # Pull the latest code
+            git checkout master
+            git pull origin master
 
-            # Navigate to the app directory
-            cd /home/user/my-spring-boot-app/
+            # Create or update the .env file
+            cat <<EOF > .env
+            MY_DB_URL=${{ secrets.MY_DB_URL }}
+            MY_DB_USERNAME=${{ secrets.MY_DB_USERNAME }}
+            MY_DB_PASSWORD=${{ secrets.MY_DB_PASSWORD }}
+            MY_GITHUB_OAUTH_CLIENT_ID=${{ secrets.MY_GITHUB_OAUTH_CLIENT_ID }}
+            MY_GITHUB_OAUTH_CLIENT_SECRET=${{ secrets.MY_GITHUB_OAUTH_CLIENT_SECRET }}
+            MY_SERVER_PORT=${{ secrets.MY_SERVER_PORT }}
+            MY_JWT_SECURITY_KEY=${{ secrets.MY_JWT_SECURITY_KEY }}
+            MY_JWT_SECURITY_KEY_EXP_TIME=${{ secrets.MY_JWT_SECURITY_KEY_EXP_TIME }}
+            MY_REFRESH_TOKEN_TTL=${{ secrets.MY_REFRESH_TOKEN_TTL }}
+            MY_CLIENT_URL=${{ secrets.MY_CLIENT_URL }}
+            MY_GOOGLE_DRIVE_ID=${{ secrets.MY_GOOGLE_DRIVE_ID }}
+            MY_APPLICATION_NAME=${{ secrets.MY_APPLICATION_NAME }}
+            EOF
 
-            # Run the Spring Boot application in the background
-            nohup java -jar demo-0.0.1-SNAPSHOT.jar --spring.config.location=/home/user/my-spring-boot-app/.env &
+            # Build the application
+            mvn clean package -DskipTests
 
-            # Optional: Clean up any stopped containers (if applicable)
-            docker system prune -af
+            # Start the application with the .env file
+            nohup java -jar target/demo-0.0.1-SNAPSHOT.jar --spring.config.location=/home/user/my-spring-boot-app/.env > app.log 2>&1 &
 
+            # Verify the application is running
+            sleep 5
+            ps aux | grep demo-0.0.1-SNAPSHOT.jar
