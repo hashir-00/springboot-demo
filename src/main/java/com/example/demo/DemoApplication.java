@@ -19,14 +19,18 @@ public class DemoApplication {
 	private static final Logger logger = LoggerFactory.getLogger(DemoApplication.class);
 
 	public static void main(String[] args) {
-		// Start the application and get the ApplicationContext
-		ApplicationContext context = SpringApplication.run(DemoApplication.class, args);
+		try{
+			// Start the application and get the ApplicationContext
+			ApplicationContext context = SpringApplication.run(DemoApplication.class, args);
 
-		// Retrieve the server.port from the environment
-		Environment env = context.getEnvironment();
-		String port = env.getProperty("server.port", "8080"); // Default to 8080 if not set
+			// Retrieve the server.port from the environment
+			Environment env = context.getEnvironment();
+			String port = env.getProperty("server.port", "8080"); // Default to 8080 if not set
 
-		logger.info("Server Running on port " + port);
+			logger.info("Server Running on port " + port);
+		}catch(Exception e){
+			logger.error(e.getMessage());
+		}
 	}
 
 

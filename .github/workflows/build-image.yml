@@ -73,7 +73,7 @@
 
  on:
    push:
-     branches: [ master ]  # Runs on PRs targeting master
+     branches: [ test ]  # Runs on PRs targeting master
 
  jobs:
    build-and-run:
@@ -140,7 +140,7 @@
              docker pull hashirhalaldeen00/demo:latest
              docker stop my-app || true
              docker rm my-app || true
-             docker run -d --name my-app -p 8080:8080 --env-file .env hashirhalaldeen00/demo:latest
+             docker run -d --name my-app -p 8080:8005 --env-file .env hashirhalaldeen00/demo:latest
              docker system prune -af
 
 
