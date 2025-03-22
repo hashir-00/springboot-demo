@@ -233,7 +233,7 @@ name: Build, Test, and Run on PR
 
 on:
   pull_request:
-    branches: [ master ]  # Runs on PRs targeting master
+    branches: [ test ]  # Runs on PRs targeting master
 
 jobs:
   build-and-run:
