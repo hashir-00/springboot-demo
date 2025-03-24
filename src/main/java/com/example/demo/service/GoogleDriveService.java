@@ -53,6 +53,7 @@ public class GoogleDriveService {
 
       return new Drive.Builder(httpTransport, JSON_FACTORY, new HttpCredentialsAdapter(credentials))
           .setApplicationName(APPLICATION_NAME)
+
           .build();
 
     } catch (Exception e) {
@@ -96,13 +97,15 @@ public class GoogleDriveService {
     try {
       assert driveService != null;
       FileList files =
-          driveService
-              .files()
-              .list()
-              .setSpaces("drive")
-              .setFields("nextPageToken, files(id,name,size,webViewLink)")
-              .setPageSize(10)
-              .execute();
+              driveService
+                      .files()
+                      .list()
+                      // Filter by parent folder ID
+                      .setQ("'" + DRIVE_FOLDER_ID + "' in parents")
+                      .setFields("nextPageToken, files(id,name,size,webViewLink)")
+                      .setPageSize(10)
+                      .execute();
+
       return new ArrayList<>() {
         {
           for (File file : files.getFiles()) {
