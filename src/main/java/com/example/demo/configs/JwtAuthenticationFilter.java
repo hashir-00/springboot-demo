@@ -1,7 +1,6 @@
 package com.example.demo.configs;
 
 import com.example.demo.service.JwtService;
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +20,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @Component
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter  {
   private static final Logger logger =
       LoggerFactory.getLogger(JwtAuthenticationFilter.class.getName());
 
@@ -46,9 +45,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       throws ServletException, IOException {
 
     final String authHeader = request.getHeader("Authorization");
-    if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+    final String path = request.getRequestURI();
+
+
+    if (path.startsWith("/swagger-ui") ||
+            path.startsWith("/v3/api-docs") ||
+            path.startsWith("/swagger-resources")) {
       filterChain.doFilter(request, response);
       return;
+    }
+    if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+      response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // Set HTTP status to 401
+      response.setContentType("application/json"); // Set content type to JSON
+      response.getWriter().write("{\"error\": \"Unauthorized\", \"message\": \"Missing token\"}");
+      return; 
     }
 
     try {
@@ -68,18 +78,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
           authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
           SecurityContextHolder.getContext().setAuthentication(authToken);
         }
-        //                return;
       }
 
       filterChain.doFilter(request, response);
-    } catch (ExpiredJwtException e) {
-      logger.warn("JWT expired: {}", e.getMessage());
-      response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-      response.getWriter().write("Token has expired");
     } catch (Exception e) {
       logger.error("Error in JwtAuthenticationFilter: {}", e.getMessage());
-      response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-      response.getWriter().write("An unexpected error occurred");
+      handlerExceptionResolver.resolveException(request, response, null, e);
     }
   }
 }
