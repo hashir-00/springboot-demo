@@ -1,4 +1,4 @@
-package com.example.demo.web.exception;
+package com.example.demo.exception;
 
 import java.util.Map;
 import org.springframework.http.HttpStatus;

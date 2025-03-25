@@ -55,6 +55,7 @@ public class SecurityConfiguration {
                     .permitAll() // Open Swagger UI
                     .requestMatchers("/welcome/**")
                     .permitAll()
+                        .requestMatchers("/webjars/**").permitAll()
                     .requestMatchers("/dashboard/**")
                     .permitAll()
 
