@@ -28,7 +28,10 @@ Save it inside resources folder
 - MY_GOOGLE_DRIVE_ID=<your_google_drive_folder_id>
 - MY_APPLICATION_NAME=<your_application_name>
 - 
-3. Build: `mvn clean install`
+3. Build:
+- `mvn wrapper:wrapper` to install mvn wrapper
+- `./mvnw clean install` (optional for mvn wrapper)
+- `mvn clean install`
 4. Run: `mvn spring-boot:run`
 
 ---
