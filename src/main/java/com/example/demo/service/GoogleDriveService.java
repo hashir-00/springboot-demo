@@ -31,8 +31,6 @@ import java.util.List;
 @Component
 public class GoogleDriveService {
   private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
-  private static final String SERVICE_ACCOUNT_KEY_PATH =
-      "src/main/resources/credentials.json"; // Your JSON Key Path
   @Value("${MY_APPLICATION_NAME}")
   private static String APPLICATION_NAME;
   private final Logger logger = LoggerFactory.getLogger(GoogleDriveService.class);
@@ -43,8 +41,10 @@ public class GoogleDriveService {
   private Drive getDriveService() {
     try {
       HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-      InputStream serviceAccountStream = new FileInputStream(SERVICE_ACCOUNT_KEY_PATH);
+      InputStream serviceAccountStream = GoogleDriveService.class.getClassLoader()
+              .getResourceAsStream("credentials.json");
 
+      assert serviceAccountStream != null;
       GoogleCredentials credentials =
           GoogleCredentials.fromStream(serviceAccountStream)
               .createScoped(Collections.singleton(DriveScopes.DRIVE_FILE));
