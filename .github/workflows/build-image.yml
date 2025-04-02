@@ -62,13 +62,10 @@ jobs:
             docker pull hashirhalaldeen00/demo:latest
 
             # Stop and remove the existing container if running (uncomment to ensure removal)
-<<<<<<< HEAD
+
 #            docker stop my-demo-container || true
 #            docker rm my-demo-container || true
-=======
-            docker stop my-demo-container || true
-            docker rm my-demo-container || true
->>>>>>> feb0758ff747ff505c9225a010c9569445ff842a
+
 
             # Run the new container with the copied environment variables
             docker run -d --name my-demo-container --env-file .env -p 8080:8080 hashirhalaldeen00/demo:latest
