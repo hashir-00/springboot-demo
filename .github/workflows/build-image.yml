@@ -56,12 +56,14 @@ jobs:
             cat .env
 
             # Prune old images and containers
-            docker system prune -a
+            docker system prune -a -f
 
             # Pull the latest Docker image
             docker pull hashirhalaldeen00/demo:latest
 
             # Stop and remove the existing container if running (uncomment to ensure removal)
+            docker stop my-demo-container || true
+            docker rm my-demo-container || true
 
             # Run the new container with the copied environment variables
             docker run -d --name my-demo-container --env-file .env -p 8080:8080 hashirhalaldeen00/demo:latest
