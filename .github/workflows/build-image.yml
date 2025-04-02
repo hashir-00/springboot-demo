@@ -43,7 +43,7 @@ jobs:
             echo "MY_GITHUB_OAUTH_CLIENT_ID=${{ secrets.MY_GITHUB_OAUTH_CLIENT_ID }}" >> .env
             echo "MY_GITHUB_OAUTH_CLIENT_SECRET=${{ secrets.MY_GITHUB_OAUTH_CLIENT_SECRET }}" >> .env
             echo "MY_SERVER_PORT=${{ secrets.MY_SERVER_PORT }}" >> .env
-            echo  "MY_SERVER_ADDRESS=0.0.0.0" >> .env
+            echo "MY_SERVER_ADDRESS=0.0.0.0" >> .env
             echo "MY_JWT_SECURITY_KEY=${{ secrets.MY_JWT_SECURITY_KEY }}" >> .env
             echo "MY_JWT_SECURITY_KEY_EXP_TIME=${{ secrets.MY_JWT_SECURITY_KEY_EXP_TIME }}" >> .env
             echo "MY_REFRESH_TOKEN_TTL=${{ secrets.MY_REFRESH_TOKEN_TTL }}" >> .env
