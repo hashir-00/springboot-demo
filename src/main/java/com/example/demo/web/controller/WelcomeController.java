@@ -14,9 +14,8 @@ public class WelcomeController {
 
   @GetMapping()
   public String getWelcome() {
-<<<<<<< HEAD
+
  return "Hello World v1";}
-=======
- return "Hello World";}
->>>>>>> b699a3279280d90a29badc26d43a0a349b793870
+
+
 }
