@@ -43,12 +43,15 @@ jobs:
             echo "MY_GITHUB_OAUTH_CLIENT_ID=${{ secrets.MY_GITHUB_OAUTH_CLIENT_ID }}" >> .env
             echo "MY_GITHUB_OAUTH_CLIENT_SECRET=${{ secrets.MY_GITHUB_OAUTH_CLIENT_SECRET }}" >> .env
             echo "MY_SERVER_PORT=${{ secrets.MY_SERVER_PORT }}" >> .env
+            echo  "MY_SERVER_ADDRESS=0.0.0.0" >> .env
             echo "MY_JWT_SECURITY_KEY=${{ secrets.MY_JWT_SECURITY_KEY }}" >> .env
             echo "MY_JWT_SECURITY_KEY_EXP_TIME=${{ secrets.MY_JWT_SECURITY_KEY_EXP_TIME }}" >> .env
             echo "MY_REFRESH_TOKEN_TTL=${{ secrets.MY_REFRESH_TOKEN_TTL }}" >> .env
             echo "MY_CLIENT_URL=${{ secrets.MY_CLIENT_URL }}" >> .env
             echo "MY_GOOGLE_DRIVE_ID=${{ secrets.MY_GOOGLE_DRIVE_ID }}" >> .env
             echo "MY_APPLICATION_NAME=${{ secrets.MY_APPLICATION_NAME }}" >> .env
+            echo "MY_SPRING_PROFILE=dev" >> .env
+            
 
             # Prune old images and containers
             docker system prune -a -f
@@ -57,8 +60,8 @@ jobs:
             docker pull hashirhalaldeen00/demo:latest
 
             # Stop and remove the existing container if running
-            docker stop my-demo-container || true
-            docker rm my-demo-container || true
+#            docker stop my-demo-container || true
+#            docker rm my-demo-container || true
 
             # Run the new container with the copied environment variables
             docker run -d --name my-demo-container --env-file .env -p 8080:8080 hashirhalaldeen00/demo:latest
