@@ -27,6 +27,8 @@ Save it inside resources folder
 - MY_CLIENT_URL=<your_client_application_url>
 - MY_GOOGLE_DRIVE_ID=<your_google_drive_folder_id>
 - MY_APPLICATION_NAME=<your_application_name>
+- MY_SPRING_PROFILE=<your_application_profile_name>
+- MY_SERVER_ADDRESS=0.0.0.0
 - 
 3. Build:
 - `mvn wrapper:wrapper` to install mvn wrapper
