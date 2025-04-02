@@ -66,6 +66,7 @@
     <logger name="com.zaxxer.hikari" level="WARN"/> <!-- Suppress HikariCP logs -->
     <logger name="org.springframework.security" level="WARN"/> <!-- Suppress Spring Security logs -->
     <logger name="liquibase" level="ERROR"/>
+    <logger name="org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer" level="ERROR"/>
 
     <logger name="com.example.demo.controllers" level="DEBUG"/>
 
@@ -81,16 +82,16 @@
         <appender-ref ref="FILE"/>
     </root>
 
-    <root level="WARN">
-        <appender-ref ref="CONSOLE"/>
-    </root>
+<!--    <root level="WARN">-->
+<!--        <appender-ref ref="CONSOLE"/>-->
+<!--    </root>-->
 
-    <root level="ERROR">
-        <appender-ref ref="CONSOLE"/>
-    </root>
+<!--    <root level="ERROR">-->
+<!--        <appender-ref ref="CONSOLE"/>-->
+<!--    </root>-->
 
-    <root level="DEBUG"> <!-- Set to DEBUG to ensure all logs are captured -->
-        <appender-ref ref="CONSOLE"/>
-    </root>
+<!--    <root level="DEBUG"> &lt;!&ndash; Set to DEBUG to ensure all logs are captured &ndash;&gt;-->
+<!--        <appender-ref ref="CONSOLE"/>-->
+<!--    </root>-->
 </configuration>
 

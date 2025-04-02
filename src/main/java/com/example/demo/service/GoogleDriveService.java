@@ -19,22 +19,25 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.FileInputStream;
 import java.io.InputStream;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 @Component
 public class GoogleDriveService {
   private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
-  @Value("${MY_APPLICATION_NAME}")
-  private static String APPLICATION_NAME;
+
+
   private final Logger logger = LoggerFactory.getLogger(GoogleDriveService.class);
+
   private final Drive driveService = getDriveService();
+
+  @Value("${MY_APPLICATION_NAME}")
+  private static String APPLICATION_NAME="Demo";
+
+
   @Value("${MY_GOOGLE_DRIVE_ID}")
   private String DRIVE_FOLDER_ID;
 
@@ -53,7 +56,6 @@ public class GoogleDriveService {
 
       return new Drive.Builder(httpTransport, JSON_FACTORY, new HttpCredentialsAdapter(credentials))
           .setApplicationName(APPLICATION_NAME)
-
           .build();
 
     } catch (Exception e) {
