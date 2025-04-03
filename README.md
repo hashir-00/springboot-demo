@@ -15,7 +15,7 @@ Save it inside resources folder
 
 1. Clone repository
 2.  Add .env file in the project directory(not src) with:
-- MY_DB_URL=<your_database_url>
+- MY_DB_URL=<your_database_url> (if you are planning to use docker instead use "jdbc:postgresql://db:5432/springboot")
 - MY_DB_USERNAME=<your_database_username>
 - MY_DB_PASSWORD=<your_database_password>
 - MY_GITHUB_OAUTH_CLIENT_ID=<your_github_oauth_client_id>
