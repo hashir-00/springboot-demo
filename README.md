@@ -20,7 +20,7 @@ Save it inside resources folder
 - MY_DB_PASSWORD=<your_database_password>
 - MY_GITHUB_OAUTH_CLIENT_ID=<your_github_oauth_client_id>
 - MY_GITHUB_OAUTH_CLIENT_SECRET=<your_github_oauth_client_secret>
-- MY_SERVER_PORT=8005
+- MY_SERVER_PORT=<your_preferred_port>(if you are changing the port make sure to expose it in dockerfile and compose ex:8005:8005 or 8081:8081)
 - MY_JWT_SECURITY_KEY=<your_jwt_security_key>
 - MY_JWT_SECURITY_KEY_EXP_TIME=<your_jwt_expiration_time>
 - MY_REFRESH_TOKEN_TTL=<your_refresh_token_ttl>
